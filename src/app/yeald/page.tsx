@@ -30,7 +30,7 @@ export default function Yeald() {
     });
     let strkbal = "0";
     const contractAddress =
-        "0x1e599a44cb196b0fa8e6af83457301e89adfb32e158fa3044cc57c4a823e877";
+        "0x49ca394ab6c1f31ddae04c8206f12064b7cf98793313ad15e06f46129fa201";
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -39,12 +39,22 @@ export default function Yeald() {
         abi: contractAbi,
         address: contractAddress,
     });
+    const handleSubmit = async () => {
+        // TO DO: Implement Starknet logic here
+        writeAsync();
+    };
+
     const calls = useMemo(() => {
         if (!userAddress || !contract) return [];
-        return contract.populateTransaction["increase_balance"]!({
-            low: amount ? amount : 0,
-            high: 0,
-        });
+        console.log(userAddress);
+
+        return contract.populateTransaction["mint"]!(
+            { userAddress },
+            {
+                low: amount ? amount : 0,
+                high: 0,
+            }
+        );
     }, [contract, userAddress, amount]);
     const {
         writeAsync,
@@ -172,10 +182,16 @@ export default function Yeald() {
                             </p>
                             <input
                                 type="number"
+                                onChange={(e) => {
+                                    setAmount(e.target.valueAsNumber);
+                                }}
                                 className="bg-transparent ml-2 focus:outline-none counter p-3"
                             />
                         </div>
-                        <button className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold">
+                        <button
+                            onClick={handleSubmit}
+                            className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
+                        >
                             Deposit
                         </button>
                     </div>
