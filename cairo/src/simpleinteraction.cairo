@@ -13,7 +13,12 @@ mod Altruist {
 
     #[storage]
     struct Storage {
-        contract_: ContractAddress,
+        contract: ContractAddress,
+    }
+
+    #[constructor]
+    fn constructor(ref self: ContractState, contract: ContractAddress) {
+        self.contract.write(contract);
     }
 
     #[external(v0)]

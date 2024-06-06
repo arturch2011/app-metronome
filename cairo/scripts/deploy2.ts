@@ -4,6 +4,7 @@ import { getCompiledCode } from "./utils";
 dotenv.config();
 
 const RPC_ENDPOINT = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7";
+const CONTRACT_ADDR = "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
 
 async function main() {
     const provider = new RpcProvider({
@@ -23,7 +24,7 @@ async function main() {
 
     try {
         ({ sierraCode, casmCode } = await getCompiledCode(
-            "cairo_MyToken"
+            "cairo_Altruist"
         ));
     } catch (error: any) {
         console.log("Failed to read contract files");
@@ -32,7 +33,7 @@ async function main() {
 
     const myCallData = new CallData(sierraCode.abi);
     const constructor = myCallData.compile("constructor", {
-        owner: deployer_address,
+        contract: CONTRACT_ADDR,
     });
     try {
         const deployResponse = await account0.declareAndDeploy({

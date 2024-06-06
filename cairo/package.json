@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "deploy": "ts-node scripts/deploy.ts"
+        "deploy": "ts-node scripts/deploy.ts",
+        "deploy2": "ts-node scripts/deploy2.ts"
     },
     "author": "",
     "license": "ISC",
