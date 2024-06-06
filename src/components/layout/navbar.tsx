@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo } from "react";
 import Link from "next/link";
-import logo from "../../../public/logomc.png";
+import logo from "../../../public/metrologoc.png";
 
 const Navbar = () => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -119,7 +119,7 @@ const Navbar = () => {
                                             animate={{
                                                 rotate: showDrop ? 180 : 0,
                                             }}
-                                            transition={{ duration: 0.3 }}
+                                            transition={{ duration: 0.05 }}
                                         >
                                             <path
                                                 d="M5.67578 12.5884L17.999 24.9116L30.3223 12.5884"
