@@ -117,7 +117,7 @@ export default function Yeald() {
         <div className="flex items-center space-x-2">
             <div className="animate-spin">
                 <svg
-                    className="h-5 w-5 text-gray-800"
+                    className="h-5 w-5 text-primary"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -235,7 +235,7 @@ export default function Yeald() {
                             onClick={handleSubmit}
                             className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
                         >
-                            Deposit
+                            {buttonContent()}
                         </button>
                     </div>
                 </div>
