@@ -13,7 +13,7 @@ import {
 } from "@starknet-react/core";
 import contractAbi from "../../abis/abi.json";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, use } from "react";
 
 export default function Yeald() {
     const { address: userAddress } = useAccount();
@@ -30,7 +30,7 @@ export default function Yeald() {
     });
     let strkbal = "0";
     const contractAddress =
-        "0x49ca394ab6c1f31ddae04c8206f12064b7cf98793313ad15e06f46129fa201";
+        "0x75739694ed876cf901b02584846d5e4de641ae43128c74db48170d5d559d5dc";
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -48,13 +48,7 @@ export default function Yeald() {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
 
-        return contract.populateTransaction["mint"]!(
-            { userAddress },
-            {
-                low: amount ? amount : 0,
-                high: 0,
-            }
-        );
+        return contract.populateTransaction["mint"]!({ low: (amount ? amount : 0), high: 0 });
     }, [contract, userAddress, amount]);
     const {
         writeAsync,

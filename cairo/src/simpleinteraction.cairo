@@ -1,6 +1,6 @@
 #[starknet::interface]
 trait IMintable<TContractState> {
-    fn mint(ref self: TContractState, receiver: starknet::ContractAddress, amount: u128);
+    fn mint(ref self: TContractState, receiver: starknet::ContractAddress, amount: u256);
 }
 
 #[starknet::contract]
@@ -10,6 +10,7 @@ mod Altruist {
     use super::IMintableDispatcherTrait;
     use starknet::contract_address_const;
     use starknet::ContractAddress;
+    use starknet::get_caller_address;
 
     #[storage]
     struct Storage {
@@ -22,16 +23,17 @@ mod Altruist {
     }
 
     #[external(v0)]
-    fn mint(self: @ContractState, receiver: ContractAddress, amount: u128) {
+    fn mint(self: @ContractState, amount: u256) {
         // address of the contract we want to call
         let token_addr: ContractAddress = contract_address_const::<
-            0x2cfda23646b05f433e63c6a8c9665926a60378883f7857b1ef588538a724178
+            0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d
         >();
 
         // create a dispatcher using the token address
         let token = IMintableDispatcher { contract_address: token_addr };
+        let addr: ContractAddress = get_caller_address();
 
         // call a function from the IMintable interface
-        token.mint(receiver, amount);
+        token.mint(addr, amount);
     }
 }

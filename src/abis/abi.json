@@ -10,15 +10,17 @@
         ]
     },
     {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+            { "name": "low", "type": "core::integer::u128" },
+            { "name": "high", "type": "core::integer::u128" }
+        ]
+    },
+    {
         "type": "function",
         "name": "mint",
-        "inputs": [
-            {
-                "name": "receiver",
-                "type": "core::starknet::contract_address::ContractAddress"
-            },
-            { "name": "amount", "type": "core::integer::u128" }
-        ],
+        "inputs": [{ "name": "amount", "type": "core::integer::u256" }],
         "outputs": [],
         "state_mutability": "view"
     },
