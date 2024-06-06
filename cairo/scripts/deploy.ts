@@ -23,7 +23,7 @@ async function main() {
 
     try {
         ({ sierraCode, casmCode } = await getCompiledCode(
-            "cairo_MyToken"
+            "cairo_YieldToken"
         ));
     } catch (error: any) {
         console.log("Failed to read contract files");

@@ -25,6 +25,13 @@
         "state_mutability": "view"
     },
     {
+        "type": "function",
+        "name": "stake",
+        "inputs": [{ "name": "amount", "type": "core::integer::u256" }],
+        "outputs": [],
+        "state_mutability": "view"
+    },
+    {
         "type": "event",
         "name": "cairo::simpleinteraction::Altruist::Event",
         "kind": "enum",

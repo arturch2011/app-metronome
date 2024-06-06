@@ -12,6 +12,7 @@ import {
     useWaitForTransaction,
 } from "@starknet-react/core";
 import contractAbi from "../../abis/abi.json";
+import myTokenAbi from "../../abis/mTAbi.json";
 
 import { useState, useMemo, use } from "react";
 
@@ -24,21 +25,61 @@ export default function Yeald() {
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+        token: "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d",
         address: userAddress,
         watch: true,
     });
+
+    const {
+        isLoading: balancePTIsLoading,
+        isError: balancePTIsError,
+        error: balancePTError,
+        data: balancePTData,
+    } = useBalance({
+        token: "0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7",
+        address: userAddress,
+        watch: true,
+    });
+    const {
+        isLoading: balanceYTIsLoading,
+        isError: balanceYTIsError,
+        error: balanceYTError,
+        data: balanceYTData,
+    } = useBalance({
+        token: "0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c",
+        address: userAddress,
+        watch: true,
+    });
+
+    let ptbal = "0";
+    let ytbal = "0";
     let strkbal = "0";
     const contractAddress =
-        "0x75739694ed876cf901b02584846d5e4de641ae43128c74db48170d5d559d5dc";
+        "0x741a663dfed73e9c2850850a9b4fe4ea7829d4c92182c3858c75d648a0a024b";
+
+    const myTokenAddr =
+        "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
+    }
+
+    if (!balancePTIsLoading && !balancePTIsError) {
+        ptbal = balancePTData?.formatted!;
+    }
+
+    if (!balanceYTIsLoading && !balanceYTIsError) {
+        ytbal = balanceYTData?.formatted!;
     }
     const { contract } = useContract({
         abi: contractAbi,
         address: contractAddress,
     });
+    const contractaprov = useContract({
+        abi: myTokenAbi,
+        address: myTokenAddr,
+    });
+
     const handleSubmit = async () => {
         // TO DO: Implement Starknet logic here
         writeAsync();
@@ -48,11 +89,13 @@ export default function Yeald() {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
 
-        return contract.populateTransaction["mint"]!({
+        // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
+        return contract.populateTransaction["stake"]!({
             low: amount ? amount : 0,
             high: 0,
         });
     }, [contract, userAddress, amount]);
+
     const {
         writeAsync,
         data: writeData,
@@ -60,6 +103,7 @@ export default function Yeald() {
     } = useContractWrite({
         calls,
     });
+
     const {
         isLoading: waitIsLoading,
         isError: waitIsError,
@@ -138,7 +182,7 @@ export default function Yeald() {
                         </svg>
                         <p>
                             The proof of concept requires that when a user
-                            transfers a MTN token, two tokens are generated, one
+                            transfers a MTK token, two tokens are generated, one
                             PT(main token) and one YT(yeald token).
                         </p>
                     </div>
@@ -156,13 +200,13 @@ export default function Yeald() {
 
                         <div className="flex gap-6">
                             <h2 className="font-bold text-xl">
-                                MTN: {Number(strkbal).toFixed(4)}
+                                MTK: {Number(strkbal).toFixed(2)}
                             </h2>
                             <h2 className="font-bold text-xl text-purple-400">
-                                PT: 0
+                                PT: {Number(ptbal).toFixed(2)}
                             </h2>
                             <h2 className="font-bold text-xl text-green-400">
-                                YT: 0
+                                YT: {Number(ytbal).toFixed(2)}
                             </h2>
                         </div>
                     </div>
@@ -171,16 +215,18 @@ export default function Yeald() {
 
                         <div className="w-full flex justify-between mb-1">
                             <p>Input</p>
-                            <p>Balance: {Number(strkbal).toFixed(4)}</p>
+                            <p>Balance: {Number(strkbal).toFixed(2)}</p>
                         </div>
                         <div className="w-full rounded-xl border-2 border-primary flex mb-4">
                             <p className="w-1/2 border-r-2 border-primary p-3">
-                                MTN
+                                MTK
                             </p>
                             <input
                                 type="number"
                                 onChange={(e) => {
-                                    setAmount(e.target.valueAsNumber);
+                                    setAmount(
+                                        (e.target.valueAsNumber * 10) ^ 18
+                                    );
                                 }}
                                 className="bg-transparent ml-2 focus:outline-none counter p-3"
                             />
