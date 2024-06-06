@@ -48,7 +48,10 @@ export default function Yeald() {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
 
-        return contract.populateTransaction["mint"]!({ low: (amount ? amount : 0), high: 0 });
+        return contract.populateTransaction["mint"]!({
+            low: amount ? amount : 0,
+            high: 0,
+        });
     }, [contract, userAddress, amount]);
     const {
         writeAsync,
@@ -135,8 +138,8 @@ export default function Yeald() {
                         </svg>
                         <p>
                             The proof of concept requires that when a user
-                            transfers a STRK token, two tokens are generated,
-                            one PT(main token) and one YT(yeald token).
+                            transfers a MTN token, two tokens are generated, one
+                            PT(main token) and one YT(yeald token).
                         </p>
                     </div>
                     <div className="w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col items-start gap-8 ">
@@ -147,13 +150,13 @@ export default function Yeald() {
                             <p>
                                 {userAddress != null
                                     ? userAddress.slice(0, 15) + "..."
-                                    : "Desconectado"}
+                                    : "Disconnected"}
                             </p>
                         </div>
 
                         <div className="flex gap-6">
                             <h2 className="font-bold text-xl">
-                                STRK: {Number(strkbal).toFixed(4)}
+                                MTN: {Number(strkbal).toFixed(4)}
                             </h2>
                             <h2 className="font-bold text-xl text-purple-400">
                                 PT: 0
@@ -172,7 +175,7 @@ export default function Yeald() {
                         </div>
                         <div className="w-full rounded-xl border-2 border-primary flex mb-4">
                             <p className="w-1/2 border-r-2 border-primary p-3">
-                                STRK
+                                MTN
                             </p>
                             <input
                                 type="number"
