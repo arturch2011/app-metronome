@@ -3,6 +3,8 @@
 import { Particles } from "@/components/particles";
 import Image from "next/image";
 import strklogo from "../../public/metrologoc.png";
+import strklog from "../../public/strklogo.png";
+import strklo from "../../public/eth.png";
 import Link from "next/link";
 
 export default function Home() {
@@ -27,10 +29,42 @@ export default function Home() {
                             <h1 className="text-2xl font-bold mb-4">MTK</h1>
                             <p>UP TO</p>
                             <p className="text-2xl font-bold text-primary">
-                                --.-- %
+                            05.00 %
                             </p>
                             <Image
                                 src={strklogo}
+                                alt="strk logo"
+                                width={80}
+                                height={80}
+                                className="absolute right-10 top-[-30px] bg-baser p-3 rounded-full border-2 border-primary"
+                            />
+                        </div>
+                    </Link>
+                    <Link href={"/yeald"}>
+                        <div className="relative w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col sombra hover:border-[1px] hover:border-primary">
+                            <h1 className="text-2xl font-bold mb-4">STRK</h1>
+                            <p>UP TO</p>
+                            <p className="text-2xl font-bold text-primary">
+                                07.00 %
+                            </p>
+                            <Image
+                                src={strklog}
+                                alt="strk logo"
+                                width={80}
+                                height={80}
+                                className="absolute right-10 top-[-30px] bg-baser p-3 rounded-full border-2 border-primary"
+                            />
+                        </div>
+                    </Link>
+                    <Link href={"/yeald"}>
+                        <div className="relative w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col sombra hover:border-[1px] hover:border-primary">
+                            <h1 className="text-2xl font-bold mb-4">ETH</h1>
+                            <p>UP TO</p>
+                            <p className="text-2xl font-bold text-primary">
+                            05.50 %
+                            </p>
+                            <Image
+                                src={strklo}
                                 alt="strk logo"
                                 width={80}
                                 height={80}

@@ -88,13 +88,18 @@ export default function Yeald() {
     const calls = useMemo(() => {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
+        const decimals = 18; // Número de casas decimais do token (verifique no contrato!)
+        const amountInWei = BigInt(amount ? amount*10**18 : 0) ; // Assumindo 18 casas decimais
 
         // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
-        return contract.populateTransaction["stake"]!({
-            low: amount ? amount : 0,
-            high: 0,
-        });
-    }, [contract, userAddress, amount]);
+        return [
+            contractaprov.contract?.populateTransaction["approve"]!(contractAddress,{ low: (amountInWei ? amountInWei : 0), high: 0 }),
+            contract.populateTransaction["stake"]!({
+                low: amountInWei ? amountInWei : 0,
+                high: 0,
+            })
+        ]
+    }, [contract, userAddress, amount, contractaprov.contract]);
 
     const {
         writeAsync,
@@ -224,9 +229,10 @@ export default function Yeald() {
                             <input
                                 type="number"
                                 onChange={(e) => {
-                                    setAmount(
-                                        (e.target.valueAsNumber * 10) ^ 18
-                                    );
+                                     
+                                   
+                                        setAmount(e.target.valueAsNumber)
+                                    
                                 }}
                                 className="bg-transparent ml-2 focus:outline-none counter p-3"
                             />
