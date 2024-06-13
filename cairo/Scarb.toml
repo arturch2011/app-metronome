@@ -1,16 +1,17 @@
 [package]
 name = "cairo"
 version = "0.1.0"
-edition = "2023_11"
 
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+
+[lib]
 
 [dependencies]
 starknet = "2.6.3"
 openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", tag = "v0.13.0" }
 
 [dev-dependencies]
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry", tag = "v0.24.0" }
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.22.0" }
 
 [[target.starknet-contract]]
 sierra = true
@@ -21,3 +22,8 @@ test = "snforge test"
 
 [tool.cairo.workspace]
 members = ["src"]
+
+[profile.devnet]
+account="devnet-rs"
+network = "testnet"
+url = "http://127.0.0.1:5050"
