@@ -79,10 +79,10 @@ const Navbar = () => {
                                 PoC
                             </Link>
                             <Link
-                                href="/"
+                                href="/swap"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
-                                Markets
+                                Trade
                             </Link>
                             <Link
                                 href="/"
