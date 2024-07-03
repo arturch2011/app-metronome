@@ -47,7 +47,7 @@ export const tradeCardsData: TradeCardData[] = [
   {
     logoType: "ETH",
     logoPath: ethLogo,
-    maturityDate: 1721908800000,
+    maturityDate: 1721476800000,
     liquidityValue: 32550292.38,
     underlyingValue: 8.02,
     impliedValue: 23.74,
