@@ -20,6 +20,14 @@ html {
     box-shadow: 0px 0px 10px rgb(236, 122, 107); /* Exemplo de valores */
 }
 
+.sombrafocus{
+    box-shadow: 0px 0px 10px rgb(236, 122, 107); /* Exemplo de valores */
+}
+
+.focus-within\:sombrafocus:focus-within {
+    box-shadow: 0px 0px 10px rgb(236, 122, 107); /* Exemplo de valores */
+}
+
 input[type="number"] {
     -moz-appearance: textfield; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */

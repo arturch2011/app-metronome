@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Cairo } from "next/font/google";
+import { Cairo } from "next/font/google";
 import { StarknetProvider } from "@/components/starknet-provider";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar";
 import { Particles } from "@/components/particles";
 
-const inter = Inter({ subsets: ["latin"] });
 const cairo = Cairo({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
