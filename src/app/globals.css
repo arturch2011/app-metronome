@@ -20,6 +20,10 @@ html {
     box-shadow: 0px 0px 10px rgb(236, 122, 107); /* Exemplo de valores */
 }
 
+.dois:hover{
+    box-shadow: 0px 0px 10px rgb(86, 221, 255); /* Exemplo de valores */
+}
+
 .sombrafocus{
     box-shadow: 0px 0px 10px rgb(236, 122, 107); /* Exemplo de valores */
 }

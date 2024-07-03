@@ -106,11 +106,24 @@ export default function TradePage() {
                                     </span>
                                 </p>
                             </div>
-                            <div className="flex items-center justify-between bg-primary/50 rounded-md p-4">
+                            <div className="flex items-center justify-between sombra border-[1px] border-primary/25 hover:border-cprimary bg-primary/50 rounded-md p-4">
                                 <div className="flex gap-4 items-center">
                                     <h3 className="font-bold text-2xl">YT</h3>
                                     <div className="flex flex-col">
                                         <p>Long yield APY</p>
+                                        <p>Price</p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col">
+                                    <p>Long yield APY</p>
+                                    <p>Price</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between sombra dois border-[1px] border-cbase/25 hover:border-cbase bg-cbase/50 rounded-md p-4">
+                                <div className="flex gap-4 items-center">
+                                    <h3 className="font-bold text-2xl">PT</h3>
+                                    <div className="flex flex-col">
+                                        <p>Fixed APY</p>
                                         <p>Price</p>
                                     </div>
                                 </div>
