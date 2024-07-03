@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 
-interface YieldCardProps {
+export interface YieldCardProps {
   link: string;
   typeToken: string;
   legend: "UP TO" | "DOWN TO";

@@ -15,6 +15,7 @@ import contractAbi from "../../abis/abi.json";
 import myTokenAbi from "../../abis/mTAbi.json";
 
 import { useState, useMemo, use } from "react";
+import { WalletBalance } from "./WalletBalance";
 
 export default function Yeald() {
     const { address: userAddress } = useAccount();
@@ -191,30 +192,11 @@ export default function Yeald() {
                             PT(main token) and one YT(yeald token).
                         </p>
                     </div>
-                    <div className="w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col items-start gap-8 ">
-                        <div>
-                            <h2 className="font-bold text-xl">
-                                Wallet Address:
-                            </h2>
-                            <p>
-                                {userAddress != null
-                                    ? userAddress.slice(0, 15) + "..."
-                                    : "Disconnected"}
-                            </p>
-                        </div>
-
-                        <div className="flex gap-6">
-                            <h2 className="font-bold text-xl">
-                                MTK: {Number(strkbal).toFixed(2)}
-                            </h2>
-                            <h2 className="font-bold text-xl text-purple-400">
-                                PT: {Number(ptbal).toFixed(2)}
-                            </h2>
-                            <h2 className="font-bold text-xl text-green-400">
-                                YT: {Number(ytbal).toFixed(2)}
-                            </h2>
-                        </div>
-                    </div>
+                    <WalletBalance 
+                        userAddress={userAddress}
+                        balance={{ strk: strkbal, pt: ptbal, yt: ytbal }}
+                    />
+                    
                     <div className="w-full p-5 backdrop-blur-sm bg-white/5  rounded-xl flex flex-col items-start  ">
                         <h2 className="font-bold text-xl mb-8">Deposit</h2>
 
