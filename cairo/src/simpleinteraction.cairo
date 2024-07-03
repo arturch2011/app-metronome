@@ -1,3 +1,5 @@
+use starknet::ContractAddress;
+
 #[starknet::interface]
 trait IMintable<TContractState> {
     fn mint(ref self: TContractState, receiver: starknet::ContractAddress, amount: u256);
@@ -9,6 +11,14 @@ trait IMintable<TContractState> {
         receiver: starknet::ContractAddress,
         amount: u256,
     );
+    fn burn_all(ref self: TContractState, accounts_list: Array<BurnList>);
+    fn balance_of(self: @TContractState, account: ContractAddress) -> u256;
+}
+
+#[derive(Drop, Serde, Copy)]
+struct BurnList {
+    recipient: ContractAddress,
+    amount: u256,
 }
 
 #[starknet::contract]
@@ -22,53 +32,36 @@ mod Altruist {
     use starknet::get_caller_address;
     use starknet::get_contract_address;
     use alexandria_storage::list::{List, ListTrait};
+    use super::BurnList;
 
 
     #[storage]
     struct Storage {
-        contract: ContractAddress,
-        // users: ArrayTrait::<ContractAddress>,
+        ytAddr: ContractAddress,
+        ptAddr: ContractAddress,
+        incTkAddr: ContractAddress,
         users: List<ContractAddress>,
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, contract: ContractAddress) {
-        self.contract.write(contract);
-    }
-
-    #[external(v0)]
-    fn mint(self: @ContractState, amount: u256) {
-        // address of the contract we want to call
-        let token_addr: ContractAddress = contract_address_const::<
-            0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d
-        >();
-
-        // create a dispatcher using the token address
-        let token = IMintableDispatcher { contract_address: token_addr };
-        let addr: ContractAddress = get_caller_address();
-
-        // call a function from the IMintable interface
-        token.mint(addr, amount);
+    fn constructor(
+        ref self: ContractState,
+        inctkaddr: ContractAddress,
+        ptaddr: ContractAddress,
+        ytaddr: ContractAddress
+    ) {
+        self.ytAddr.write(ytaddr);
+        self.ptAddr.write(ptaddr);
+        self.incTkAddr.write(inctkaddr);
     }
 
 
     #[external(v0)]
-    fn stake(self: @ContractState, amount: u256) {
-        // declare the contract addresses
-        let incomeTk: ContractAddress = contract_address_const::<
-            0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d
-        >();
-        let ptAddr: ContractAddress = contract_address_const::<
-            0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7
-        >();
-        let ytAddr: ContractAddress = contract_address_const::<
-            0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c
-        >();
-
+    fn stake(ref self: ContractState, amount: u256) {
         // create dispatchers for the contracts
-        let incTk = IMintableDispatcher { contract_address: incomeTk };
-        let ptTk = IMintableDispatcher { contract_address: ptAddr };
-        let ytTk = IMintableDispatcher { contract_address: ytAddr };
+        let incTk = IMintableDispatcher { contract_address: self.incTkAddr.read() };
+        let ptTk = IMintableDispatcher { contract_address: self.ptAddr.read() };
+        let ytTk = IMintableDispatcher { contract_address: self.ytAddr.read() };
 
         // get the address of the caller
         let addr: ContractAddress = get_caller_address();
@@ -79,9 +72,31 @@ mod Altruist {
         ytTk.mint(addr, amount);
 
         // add the user to the list
-        let mut test = self.users.read();
-        test.append(addr).expect('failed to append');
+        let mut usrList = self.users.read();
+        usrList.append(addr).expect('failed to append');
     }
-// #[external(v0)]
-// fn burnAll(ref self: Contrac)
+
+    #[external(v0)]
+    fn burnAll(ref self: ContractState) {
+        // create dispatchers for the contracts
+        let ytTk = IMintableDispatcher { contract_address: self.ytAddr.read() };
+
+        // burn all the tokens
+        let mut usrlist = self.users.read();
+        let l = usrlist.len();
+        let mut burn_list = ArrayTrait::<BurnList>::new();
+
+        let mut index = 0;
+        loop {
+            if index == l {
+                break ();
+            }
+            let account_1 = usrlist[index];
+            let amountT = ytTk.balance_of(account_1);
+            let request1 = BurnList { recipient: account_1, amount: amountT };
+            burn_list.append(request1);
+            index += 1;
+        };
+        ytTk.burn_all(burn_list);
+    }
 }
