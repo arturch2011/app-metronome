@@ -17,10 +17,16 @@ mod Amm {
     use super::IMintableDispatcher;
     use super::IMintableDispatcherTrait;
 
+
     use starknet::contract_address_const;
     use starknet::ContractAddress;
     use starknet::get_caller_address;
     use starknet::get_contract_address;
+    use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
+    use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
+
+    const KEY: felt252 =
+        18669995996566340; // felt252 conversion of "BTC/USD", can also write const KEY : felt252 = 'BTC/USD';
 
     #[storage]
     struct Storage {
@@ -58,7 +64,6 @@ mod Amm {
             }
         }
 
-
         fn _update(ref self: ContractState, reserve0: u256, reserve1: u256) -> () {
             self.reserve0.write(reserve0);
             self.reserve1.write(reserve1);
@@ -78,6 +83,24 @@ mod Amm {
             }
             z
         }
+
+        fn _get_asset_price_median(
+            self: @ContractState, oracle_address: ContractAddress, asset: DataType
+        ) -> u128 {
+            let oracle_dispatcher = IPragmaABIDispatcher { contract_address: oracle_address };
+            let output: PragmaPricesResponse = oracle_dispatcher
+                .get_data(asset, AggregationMode::Median(()));
+            return output.price;
+        }
+    }
+
+    #[external(v0)]
+    fn getPrice(ref self: ContractState) -> u128 {
+        let oracle_address: ContractAddress = contract_address_const::<
+            0x06df335982dddce41008e4c03f2546fa27276567b5274c7d0c1262f3c2b5d167
+        >();
+        let price = self._get_asset_price_median(oracle_address, DataType::SpotEntry(KEY));
+        price
     }
 
 

@@ -14,17 +14,21 @@ trait IMintable<TContractState> {
 #[starknet::contract]
 mod Altruist {
     // importing IMintableDispacher and the trait into the module scope
+    use core::result::ResultTrait;
     use super::IMintableDispatcher;
     use super::IMintableDispatcherTrait;
     use starknet::contract_address_const;
     use starknet::ContractAddress;
     use starknet::get_caller_address;
     use starknet::get_contract_address;
+    use alexandria_storage::list::{List, ListTrait};
 
 
     #[storage]
     struct Storage {
         contract: ContractAddress,
+        // users: ArrayTrait::<ContractAddress>,
+        users: List<ContractAddress>,
     }
 
     #[constructor]
@@ -46,8 +50,11 @@ mod Altruist {
         // call a function from the IMintable interface
         token.mint(addr, amount);
     }
+
+
     #[external(v0)]
     fn stake(self: @ContractState, amount: u256) {
+        // declare the contract addresses
         let incomeTk: ContractAddress = contract_address_const::<
             0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d
         >();
@@ -58,14 +65,23 @@ mod Altruist {
             0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c
         >();
 
+        // create dispatchers for the contracts
         let incTk = IMintableDispatcher { contract_address: incomeTk };
         let ptTk = IMintableDispatcher { contract_address: ptAddr };
         let ytTk = IMintableDispatcher { contract_address: ytAddr };
 
+        // get the address of the caller
         let addr: ContractAddress = get_caller_address();
 
+        // transfer the tokens from the caller to the contract
         incTk.transfer_from(addr, get_contract_address(), amount);
         ptTk.mint(addr, amount);
         ytTk.mint(addr, amount);
+
+        // add the user to the list
+        let mut test = self.users.read();
+        test.append(addr).expect('failed to append');
     }
+// #[external(v0)]
+// fn burnAll(ref self: Contrac)
 }

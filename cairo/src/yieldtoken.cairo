@@ -19,7 +19,8 @@ mod YieldToken {
         #[substorage(v0)]
         erc20: ERC20Component::Storage,
         #[substorage(v0)]
-        ownable: OwnableComponent::Storage
+        ownable: OwnableComponent::Storage,
+    // owners: Array<ContractAddress>
     }
 
     #[event]
@@ -47,4 +48,8 @@ mod YieldToken {
         // ANYONE can mint tokens
         self.erc20._mint(recipient, amount);
     }
+// #[external(v0)]
+// fn transfer(ref self: ContractState, recipient: ContractAddress, amount: u256) {
+//     self.erc20._transfer(get_caller_address(), recipient, amount);
+// }
 }
