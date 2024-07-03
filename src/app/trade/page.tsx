@@ -59,9 +59,9 @@ export default function TradePage() {
                     </button>
                 </div>
             </section>
-            <section>
+            <section className="px-10 pb-20">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-screen-2xl mx-auto">
-                    <Link href={"/yeald"}>
+                    <Link href={`/trade/${1}`}>
                         <div className="relative w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col gap-2 ">
                             <div className="flex items-center justify-between mb-8">
                                 <h1 className="text-2xl font-bold ">MTK</h1>
