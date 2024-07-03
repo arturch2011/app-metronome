@@ -82,13 +82,19 @@ const Navbar = () => {
                                 href="/swap"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
-                                Trade
+                                Swap
                             </Link>
                             <Link
                                 href="/"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
                                 Pools
+                            </Link>
+                            <Link
+                                href="/trade"
+                                className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
+                            >
+                                Trade
                             </Link>
                         </div>
                         <div className="hidden md:block">
