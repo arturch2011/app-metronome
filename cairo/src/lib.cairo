@@ -1,4 +1,4 @@
 mod erc20;
 mod simpleinteraction;
 mod principaltoken;
-mod yieldtoken;
+pub mod yieldtoken;
