@@ -8,6 +8,8 @@ import { Graph } from "./Graph";
 interface PtYtTradingProps {
 
 }
+import Example2 from "@/components/graphs/apy-graph";
+import { Three } from "@/components/ui/threelines";
 
 export default function PtYtTrading({}: PtYtTradingProps) {
   const params = useParams();

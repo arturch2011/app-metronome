@@ -1,0 +1,60 @@
+[
+    {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+            {
+                "name": "principalTk",
+                "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+                "name": "token2",
+                "type": "core::starknet::contract_address::ContractAddress"
+            }
+        ]
+    },
+    {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+            { "name": "low", "type": "core::integer::u128" },
+            { "name": "high", "type": "core::integer::u128" }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "swap",
+        "inputs": [
+            {
+                "name": "tokenIn",
+                "type": "core::starknet::contract_address::ContractAddress"
+            },
+            { "name": "amountIn", "type": "core::integer::u256" }
+        ],
+        "outputs": [{ "type": "core::integer::u256" }],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "add_liquidity",
+        "inputs": [
+            { "name": "amount0", "type": "core::integer::u256" },
+            { "name": "amount1", "type": "core::integer::u256" }
+        ],
+        "outputs": [{ "type": "core::integer::u256" }],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "remove_liquidity",
+        "inputs": [{ "name": "shares", "type": "core::integer::u256" }],
+        "outputs": [{ "type": "(core::integer::u256, core::integer::u256)" }],
+        "state_mutability": "external"
+    },
+    {
+        "type": "event",
+        "name": "cairo::amml::Amm::Event",
+        "kind": "enum",
+        "variants": []
+    }
+]

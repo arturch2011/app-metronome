@@ -1,0 +1,48 @@
+[
+    {
+        "type": "constructor",
+        "name": "constructor",
+        "inputs": [
+            {
+                "name": "inctkaddr",
+                "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+                "name": "ptaddr",
+                "type": "core::starknet::contract_address::ContractAddress"
+            },
+            {
+                "name": "ytaddr",
+                "type": "core::starknet::contract_address::ContractAddress"
+            }
+        ]
+    },
+    {
+        "type": "struct",
+        "name": "core::integer::u256",
+        "members": [
+            { "name": "low", "type": "core::integer::u128" },
+            { "name": "high", "type": "core::integer::u128" }
+        ]
+    },
+    {
+        "type": "function",
+        "name": "stake",
+        "inputs": [{ "name": "amount", "type": "core::integer::u256" }],
+        "outputs": [],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "burnAll",
+        "inputs": [],
+        "outputs": [],
+        "state_mutability": "external"
+    },
+    {
+        "type": "event",
+        "name": "cairo::simpleinteraction::Altruist::Event",
+        "kind": "enum",
+        "variants": []
+    }
+]
