@@ -47,4 +47,9 @@ mod MyToken {
         // ANYONE can mint tokens
         self.erc20._mint(recipient, amount);
     }
+
+    #[external(v0)]
+    fn current_rate(self: @ContractState) -> u256 {
+        5_u256
+    }
 }
