@@ -3,13 +3,11 @@
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { SwapMint } from "./SwapMint";
-import { Graph } from "./Graph";
+import { GraphDashboard } from "./GraphDashboard";
 
 interface PtYtTradingProps {
 
 }
-import Example2 from "@/components/graphs/apy-graph";
-import { Three } from "@/components/ui/threelines";
 
 export default function PtYtTrading({}: PtYtTradingProps) {
   const params = useParams();
@@ -65,7 +63,7 @@ export default function PtYtTrading({}: PtYtTradingProps) {
         </div>
         <SwapMint />
       </div>
-      <Graph isPt={isPt} />
+      <GraphDashboard isPt={isPt} />
     </div>
 </section>
 );

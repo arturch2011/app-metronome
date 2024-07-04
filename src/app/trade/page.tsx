@@ -2,7 +2,7 @@
 
 import { TradeCard } from "./TradeCard";
 
-import { TradeCardData, tradeCardsData } from "../../data";
+import { TradeCardData, tradeCardsData } from "../../data/trade-data";
 import { createContext } from "react";
 import Link from "next/link";
 

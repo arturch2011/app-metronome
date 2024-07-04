@@ -2,7 +2,7 @@
 
 import { YieldCard } from "@/components/ui/YieldCard";
 
-import { yieldCardData } from "../data";
+import { yieldCardData } from "../data/trade-data";
 
 export default function Home() {
   return (

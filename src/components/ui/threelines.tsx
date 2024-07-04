@@ -1,10 +1,10 @@
-interface ThreeProps {
+interface ThreeLineProps {
     first: string;
     second: string;
     third: number;
 }
 
-export const Three = ({ first, second, third }: ThreeProps) => (
+export const ThreeLines = ({ first, second, third }: ThreeLineProps) => (
     <div className="flex flex-col items-start justify-center">
         <p className="text-cprimary font-bold">{first}</p>
         <p className=" font-bold text-xl">{second}</p>
