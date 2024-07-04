@@ -1,4 +1,5 @@
 use starknet::ContractAddress;
+use array::{ArrayTrait, SpanTrait};
 
 #[derive(Drop, Serde, Copy)]
 struct BurnList {
@@ -60,11 +61,18 @@ pub mod YieldToken {
     #[event]
     #[derive(Drop, starknet::Event)]
     pub enum Event {
+        // TokensSent: TokensSent,
         #[flat]
         ERC20Event: ERC20Component::Event,
         #[flat]
         OwnableEvent: OwnableComponent::Event
     }
+    // #[derive(Drop, starknet::Event)]
+    // struct TokensSent {
+    //     token_address: ContractAddress,
+    //     recipients: felt252,
+    // }
+
 
     #[constructor]
     fn constructor(ref self: ContractState, owner: ContractAddress) {
