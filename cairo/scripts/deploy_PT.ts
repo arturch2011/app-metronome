@@ -4,9 +4,6 @@ import { getCompiledCode } from "./utils";
 dotenv.config();
 
 const RPC_ENDPOINT = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7";
-// const CONTRACT_ADDR = "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
-const PT_ADDR = "0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7";
-const MTK_ADDR = "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
 
 async function main() {
     const provider = new RpcProvider({
@@ -26,7 +23,7 @@ async function main() {
 
     try {
         ({ sierraCode, casmCode } = await getCompiledCode(
-            "cairo_Amm"
+            "cairo_PrincipalToken"
         ));
     } catch (error: any) {
         console.log("Failed to read contract files");
@@ -35,11 +32,9 @@ async function main() {
 
     const myCallData = new CallData(sierraCode.abi);
     const constructor = myCallData.compile("constructor", {
-        token1: PT_ADDR,
-        token2: MTK_ADDR,
+        owner: deployer_address,
     });
     try {
-        console.log("Deploying contract...");
         const deployResponse = await account0.declareAndDeploy({
             contract: sierraCode,
             casm: casmCode,
@@ -47,9 +42,9 @@ async function main() {
             constructorCalldata: constructor,
         });
         console.log(
-            `✅ AMM Contract has been deploy with the address: ${deployResponse.deploy.address}`
+            `✅ Contract has been deploy with the address: ${deployResponse.deploy.address}`
         );
-        // console.log(`✅ Contract has been deploy data ${deployResponse.deploy.calldata}`);
+        console.log(`✅ Contract has been deploy data ${deployResponse.deploy.calldata}`);
     } catch (error: any) {
         console.log("ERRO NO DEPLOYYYY");
         console.log(error);
