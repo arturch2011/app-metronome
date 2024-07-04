@@ -1,7 +1,7 @@
 import metroLogo from "../../public/metrologoc.png";
 import ethLogo from "../../public/eth.png";
 import { YieldCardProps } from "@/components/ui/YieldCard";
-import { TradeCardProps } from "@/app/trade/TradeCard";
+import { StaticImageData } from "next/image";
 
 
 type YieldCardData = Omit<YieldCardProps, "link">;
@@ -27,13 +27,24 @@ export const yieldCardData: YieldCardData[]  = [
   }
 ]
 
-let tradeCardsProps: TradeCardProps;
-
-type TradeCardData = Omit<typeof tradeCardsProps.tradeCardData, "link">;
+export type TradeCardData = {
+  tokenType: string;
+  tokenDescription: string;
+  logoPath: StaticImageData;
+  maturityDate: number;
+  liquidityValue: number;
+  underlyingValue: number;
+  impliedValue: number;
+  longPercent: number;
+  longPrice: number;
+  fixedPercent: number;
+  fixedPrice: number;
+}
 
 export const tradeCardsData: TradeCardData[] = [
   {
-    logoType: "MTK",
+    tokenType: "MTK",
+    tokenDescription: "Token MTK description",
     logoPath: metroLogo,
     maturityDate: 1721908800000,
     liquidityValue: 54650292.38,
@@ -45,7 +56,8 @@ export const tradeCardsData: TradeCardData[] = [
     fixedPrice: 3800.5,
   },
   {
-    logoType: "ETH",
+    tokenType: "ETH",
+    tokenDescription: "Token ETH description",
     logoPath: ethLogo,
     maturityDate: 1721476800000,
     liquidityValue: 32550292.38,

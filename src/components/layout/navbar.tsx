@@ -53,7 +53,7 @@ const Navbar = () => {
 
     return (
         <motion.nav
-            className={`bg-white/10 backdrop-blur-sm fixed w-full z-20 ${
+            className={`bg-white/10 backdrop-blur-sm stick w-full z-20 ${
                 visible ? "" : "-translate-y-full"
             }`}
             initial={false}

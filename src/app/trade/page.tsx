@@ -1,6 +1,16 @@
+"use client"
+
 import { TradeCard } from "./TradeCard";
 
-import { tradeCardsData } from "../../data";
+import { TradeCardData, tradeCardsData } from "../../data";
+import { createContext } from "react";
+import Link from "next/link";
+
+interface TradeContextType {
+  tradeCardData: TradeCardData;
+}
+
+export const TradeContext = createContext({} as TradeContextType);
 
 export default function TradePage() {
   return (
@@ -56,15 +66,15 @@ export default function TradePage() {
           </button>
         </div>
       </section>
-    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-screen-2xl mx-auto px-10">
-      {tradeCardsData.map((tradeCardData, idx) => (
-        <TradeCard
-          key={idx}
-          link="/"
-          tradeCardData={tradeCardData}
-        />
-      ))}
-    </section>
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-screen-2xl mx-auto px-10">
+          {tradeCardsData.map((tradeCardData, idx) => (
+            <Link key={idx} href={`/trade/${idx}`}>
+              <TradeContext.Provider value={{tradeCardData}}>        
+                <TradeCard />
+              </TradeContext.Provider>
+            </Link>
+          ))}
+      </section>
     </div>
   );
 }
