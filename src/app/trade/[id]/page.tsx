@@ -9,6 +9,8 @@ import { IoSettingsSharp } from "react-icons/io5";
 import strklogo from "/public/metrologoc.png";
 import Chart from "@/components/graphs/apy-graph";
 import Example from "@/components/graphs/price-graph";
+import Example2 from "@/components/graphs/apy-graph";
+import { Three } from "@/components/ui/threelines";
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -19,7 +21,7 @@ export default function PtYtTrading() {
 
     return (
         <>
-            <section className="min-h-screen w-full flex items-center justify-center p-10">
+            <section className="min-h-screen w-full flex items-center justify-center py-20">
                 <div className="flex gap-8 w-full max-w-screen-2xl">
                     <div className="flex flex-col gap-6 w-full lg:w-1/3">
                         <div className="w-full p-3 backdrop-blur-sm  rounded-xl flex items-start gap-8 sombra border-2 border-primary">
@@ -158,7 +160,74 @@ export default function PtYtTrading() {
                                 Price
                             </button>
                         </div>
-                        <Example />
+                        <div className="flex flex-col w-full ">
+                            {isApy ? (
+                                <div>
+                                    <div className="flex w-full items-center justify-start gap-4 mb-4">
+                                        <p className="text-2xl font-bold">
+                                            21.30%
+                                        </p>
+                                        <p className="text-green-400 text-xl">
+                                            50% (Past 7d)
+                                        </p>
+                                    </div>
+                                    <p>
+                                        {isPt
+                                            ? "1 PT rstETH is equal to1 rstETH at maturity."
+                                            : "1 YT rstETH represents the yield of1 rstETH until maturity."}
+                                    </p>
+                                    <Example />
+                                </div>
+                            ) : (
+                                <div>
+                                    <div className="flex w-full items-center justify-start gap-4 mb-4">
+                                        <p className="text-2xl font-bold">
+                                            {isPt ? "0.2" : "0.8"} MKT
+                                        </p>
+                                        <p className="text-green-400 text-xl">
+                                            50% (Past 7d)
+                                        </p>
+                                    </div>
+                                    <p>
+                                        {isPt
+                                            ? "1 PT rstETH is equal to1 rstETH at maturity."
+                                            : "1 YT rstETH represents the yield of1 rstETH until maturity."}
+                                    </p>
+                                    <Example2 />
+                                </div>
+                            )}
+                            <div className="flex gap-6 w-full justify-around p-5 backdrop-blur-sm bg-white/5  rounded-xl my-4">
+                                <Three
+                                    first="Liquidity"
+                                    second="num"
+                                    third={10}
+                                />
+                                <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
+                                <Three
+                                    first="Liquidity"
+                                    second="num"
+                                    third={10}
+                                />
+                                <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
+                                <Three
+                                    first="Liquidity"
+                                    second="num"
+                                    third={10}
+                                />
+                                <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
+                                <Three
+                                    first="Liquidity"
+                                    second="num"
+                                    third={10}
+                                />
+                                <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
+                                <Three
+                                    first="Liquidity"
+                                    second="num"
+                                    third={10}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
