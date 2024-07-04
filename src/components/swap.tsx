@@ -9,8 +9,11 @@ import {
     useExplorer,
     useWaitForTransaction,
 } from "@starknet-react/core";
-import contractAbi from "../abis/abi.json";
+import contractAbi from "../abis/ammabi.json";
 import myTokenAbi from "../abis/mTAbi.json";
+import ptTokenAbi from "../abis/ptabi.json";
+import ytTokenAbi from "../abis/ytabi.json";
+
 import { MdSwapVert } from "react-icons/md";
 import { motion } from "framer-motion";
 import { useState, useMemo, use } from "react";
@@ -18,9 +21,11 @@ import { useState, useMemo, use } from "react";
 interface SwapProps {
     isPt: boolean;
     address: string;
+    pt: string;
+    yt: string;
 }
 
-export const Swap = ({ isPt, address }: SwapProps) => {
+export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
     const { address: userAddress } = useAccount();
     const [amount, setAmount] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
@@ -31,7 +36,7 @@ export const Swap = ({ isPt, address }: SwapProps) => {
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d",
+        token: "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821",
         address: userAddress,
         watch: true,
     });
@@ -42,7 +47,7 @@ export const Swap = ({ isPt, address }: SwapProps) => {
         error: balancePTError,
         data: balancePTData,
     } = useBalance({
-        token: "0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7",
+        token: "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe",
         address: userAddress,
         watch: true,
     });
@@ -52,7 +57,7 @@ export const Swap = ({ isPt, address }: SwapProps) => {
         error: balanceYTError,
         data: balanceYTData,
     } = useBalance({
-        token: "0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c",
+        token: "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739",
         address: userAddress,
         watch: true,
     });
@@ -61,10 +66,15 @@ export const Swap = ({ isPt, address }: SwapProps) => {
     let ytbal = "0";
     let strkbal = "0";
     const contractAddress =
-        "0x741a663dfed73e9c2850850a9b4fe4ea7829d4c92182c3858c75d648a0a024b";
+        "0x7f719b976b83c89f6bbd582f61d00326df9bdf10479203be465a8fa13c035c1";
 
     const myTokenAddr =
-        "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
+        "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821";
+
+    const ptAddress =
+        "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe";
+    const ytAddress =
+        "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739";
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -81,9 +91,17 @@ export const Swap = ({ isPt, address }: SwapProps) => {
         abi: contractAbi,
         address: contractAddress,
     });
-    const contractaprov = useContract({
+    const contractapprove = useContract({
         abi: myTokenAbi,
         address: myTokenAddr,
+    });
+    const { contract: contractpt } = useContract({
+        abi: ptTokenAbi,
+        address: ptAddress,
+    });
+    const { contract: contractyt } = useContract({
+        abi: ytTokenAbi,
+        address: ytAddress,
     });
 
     const handleSubmit = async () => {
@@ -92,14 +110,39 @@ export const Swap = ({ isPt, address }: SwapProps) => {
     };
 
     const calls = useMemo(() => {
-        if (!userAddress || !contract) return [];
+        if (
+            !userAddress ||
+            !contract ||
+            !contractapprove ||
+            !contractpt ||
+            !contractyt
+        )
+            return [];
         console.log(userAddress);
+        const amountInWei = BigInt(amount ? amount * 10 ** 18 : 0); // Assumindo 18 casas decimais
 
         // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
-        return contract.populateTransaction["stake"]!({
-            low: amount ? amount : 0,
-            high: 0,
-        });
+        return [
+            contractyt.populateTransaction["approve"]!(contractAddress, {
+                low: amountInWei ? amountInWei : 0,
+                high: 0,
+            }),
+            contractpt.populateTransaction["approve"]!(contractAddress, {
+                low: amountInWei ? amountInWei : 0,
+                high: 0,
+            }),
+            contractapprove.contract?.populateTransaction["approve"]!(
+                contractAddress,
+                {
+                    low: amountInWei ? amountInWei : 0,
+                    high: 0,
+                }
+            ),
+            contract.populateTransaction["swap"]!(ptAddress, {
+                low: amountInWei ? amountInWei : 0,
+                high: 0,
+            }),
+        ];
     }, [contract, userAddress, amount]);
 
     const {
@@ -165,13 +208,13 @@ export const Swap = ({ isPt, address }: SwapProps) => {
             <div className="w-full  flex flex-col items-start  ">
                 <div className="w-full flex justify-between mb-1">
                     <p>Input</p>
-                    <p>Balance: {Number(strkbal).toFixed(2)}</p>
+                    <p>Balance: {Number(ptbal).toFixed(2)}</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden">
                     <input
                         type="number"
                         onChange={(e) => {
-                            setAmount((e.target.valueAsNumber * 10) ^ 18);
+                            setAmount(e.target.valueAsNumber);
                         }}
                         className="bg-transparent w-2/3 focus:outline-none counter p-3"
                     />
@@ -179,24 +222,25 @@ export const Swap = ({ isPt, address }: SwapProps) => {
                         onClick={() => setShowPopup(true)}
                         className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
                     >
-                        MTK
+                        PT MTK
                     </button>
                 </div>
                 <MdSwapVert className="self-center text-primary text-4xl my-2" />
 
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <input
+                    {/* <input
                         type="number"
                         onChange={(e) => {
                             setAmount((e.target.valueAsNumber * 10) ^ 18);
                         }}
                         className="bg-transparent w-2/3 focus:outline-none counter p-3"
-                    />
+                    /> */}
+                    <p className="w-2/3 p-3">{amount}</p>
                     <button
                         onClick={() => setShowPopup(true)}
                         className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
                     >
-                        STRK
+                        MTK
                     </button>
                 </div>
                 <button

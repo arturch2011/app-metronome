@@ -11,6 +11,7 @@ import Chart from "@/components/graphs/apy-graph";
 import Example from "@/components/graphs/price-graph";
 import Example2 from "@/components/graphs/apy-graph";
 import { Three } from "@/components/ui/threelines";
+import { addressMap } from "../../../data";
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -107,7 +108,12 @@ export default function PtYtTrading() {
                                 </button>
                             </div>
                             {isSwap ? (
-                                <Swap isPt={true} address="oi" />
+                                <Swap
+                                    isPt={true}
+                                    address={id.toString()}
+                                    pt="0x04a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7"
+                                    yt="0x07363bb886c801a7c620a953e981cfc209dbd8370d8f4ff8a1df6b8eaec51642"
+                                />
                             ) : (
                                 <Mint address="oi" />
                             )}
@@ -199,32 +205,32 @@ export default function PtYtTrading() {
                             <div className="flex gap-6 w-full justify-around p-5 backdrop-blur-sm bg-white/5  rounded-xl my-4">
                                 <Three
                                     first="Liquidity"
-                                    second="num"
+                                    second="$100,00"
                                     third={10}
                                 />
                                 <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
                                 <Three
-                                    first="Liquidity"
-                                    second="num"
-                                    third={10}
+                                    first="24h Volume"
+                                    second="$10,00"
+                                    third={-10}
                                 />
                                 <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
                                 <Three
-                                    first="Liquidity"
-                                    second="num"
-                                    third={10}
+                                    first="Underlying APY"
+                                    second="0%"
+                                    third={5}
                                 />
                                 <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
                                 <Three
-                                    first="Liquidity"
-                                    second="num"
-                                    third={10}
+                                    first="Implied APY"
+                                    second="0%"
+                                    third={4}
                                 />
                                 <span className="w-full h-[1px] lg:w-[1px] lg:h-full bg-primary rounded-full" />
                                 <Three
-                                    first="Liquidity"
-                                    second="num"
-                                    third={10}
+                                    first="Long Yield APY"
+                                    second="10%"
+                                    third={-2}
                                 />
                             </div>
                         </div>
