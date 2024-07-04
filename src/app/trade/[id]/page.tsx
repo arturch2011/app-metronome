@@ -16,7 +16,7 @@ export default function PtYtTrading({}: PtYtTradingProps) {
 
   return (
     <section className="mt-10 mx-10">
-      <div className="flex gap-8 w-full max-w-screen-2xl">
+      <div className="flex gap-8 w-full">
         <div className="flex flex-col gap-6 w-full lg:w-1/3">
           <div className="w-full p-3 backdrop-blur-sm  rounded-xl flex items-start gap-8 sombra border-2 border-primary">
             <svg
