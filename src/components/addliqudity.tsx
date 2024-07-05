@@ -17,7 +17,6 @@ import { MdAdd } from "react-icons/md";
 import contractAbi from "../abis/ammabi.json";
 import myTokenAbi from "../abis/mTAbi.json";
 import ptTokenAbi from "../abis/ptabi.json";
-import ytTokenAbi from "../abis/ytabi.json";
 
 import { useState, useMemo, use } from "react";
 
@@ -26,7 +25,7 @@ require("dotenv").config();
 const mtkAddr = process.env.NEXT_PUBLIC_MTK_ADDR || "";
 const ptkAddr = process.env.NEXT_PUBLIC_PT_ADDR || "";
 const ytkAddr = process.env.NEXT_PUBLIC_YT_ADDR || "";
-const contractAddr = process.env.NEXT_PUBLIC_AMMY_ADDR || "";
+const contractAddr = process.env.NEXT_PUBLIC_AMM_ADDR || "";
 
 interface AddLiqProps {
     address: string;
@@ -103,11 +102,6 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         address: ptAddress,
     });
 
-    const contractyt = useContract({
-        abi: ytTokenAbi,
-        address: ytkAddr,
-    });
-
     const handleSubmit = async () => {
         // TO DO: Implement Starknet logic here
         writeAsync();
@@ -117,7 +111,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
         const decimals = 18; // Número de casas decimais do token (verifique no contrato!)
-        const amountplus = amount ? amount * 20 : 0;
+        const amountplus = amount ? amount * 1.05 : 0;
         const amountInWei = BigInt(amount ? amount * 10 ** 18 : 0); // Assumindo 18 casas decimais
         const amountplusInWei = BigInt(amountplus * 10 ** 18); // Assumindo 18 casas decimais
 
@@ -127,7 +121,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
                 contractAddress,
                 { low: amountInWei ? amountInWei : 0, high: 0 }
             ),
-            contractyt.contract?.populateTransaction["approve"]!(
+            contractpt.contract?.populateTransaction["approve"]!(
                 contractAddress,
                 { low: amountplusInWei ? amountplusInWei : 0, high: 0 }
             ),
@@ -227,7 +221,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
                     <p>PT Input</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden ">
-                    <p className="w-2/3 p-3">{(amount * 20).toFixed(2)}</p>
+                    <p className="w-2/3 p-3">{(amount * 1.05).toFixed(2)}</p>
 
                     <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
                         PT MTK
