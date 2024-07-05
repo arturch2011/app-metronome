@@ -1,5 +1,6 @@
 import metroLogo from "../../public/metrologoc.png";
 import ethLogo from "../../public/eth.png";
+import strklogo from "../../public/strklogo.png";
 import { YieldCardProps } from "@/components/ui/YieldCard";
 import { TradeCardProps } from "@/components/tradecard";
 import { PoolsCardProps } from "@/components/ui/poolscard";
@@ -20,12 +21,12 @@ export const yieldCardData: YieldCardData[]  = [
     typeToken: "STRK",
     legend: "UP TO",
     percent: 7.00,
-    logoPath: metroLogo
+    logoPath: strklogo
   },
   {
     typeToken: "ETH",
-    legend: "DOWN TO",
-    percent: -1.50,
+    legend: "UP TO",
+    percent: 3.50,
     logoPath: ethLogo
   }
 ]
