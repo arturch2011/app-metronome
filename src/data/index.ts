@@ -2,6 +2,9 @@ import metroLogo from "../../public/metrologoc.png";
 import ethLogo from "../../public/eth.png";
 import { YieldCardProps } from "@/components/ui/YieldCard";
 import { TradeCardProps } from "@/components/tradecard";
+import { PoolsCardProps } from "@/components/ui/poolscard";
+
+
 
 
 type YieldCardData = Omit<YieldCardProps, "link">;
@@ -25,6 +28,19 @@ export const yieldCardData: YieldCardData[]  = [
     percent: -1.50,
     logoPath: ethLogo
   }
+]
+
+type PoolsCardData = Omit<PoolsCardProps, "link">;
+
+export const poolsCardData: PoolsCardData[]  = [
+  {
+    typeToken: "MTK",
+    legend: "UP TO",
+    percent: 5.00,
+    logoPath: metroLogo,
+    tvl: 20,
+    maturity: 11,
+  },
 ]
 
 let tradeCardsProps: TradeCardProps;

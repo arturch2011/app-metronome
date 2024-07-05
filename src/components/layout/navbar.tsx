@@ -85,7 +85,7 @@ const Navbar = () => {
                                 Swap
                             </Link>
                             <Link
-                                href="/"
+                                href="/pools"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
                                 Pools
