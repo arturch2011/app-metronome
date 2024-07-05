@@ -176,15 +176,15 @@ mod Amm {
         let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
         let mut shares: u256 = 0;
 
-        let yield = underlying.current_rate();
+        // let yield = underlying.current_rate();
 
-        if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
-            assert(
-                (self.reserve0.read()
-                    * amount1) == (self.reserve1.read() * (amount0 * (1000 + yield * 10) / 1000)),
-                'dy / dx != y / x'
-            );
-        }
+        // if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
+        //     assert(
+        //         (self.reserve0.read()
+        //             * amount1) == (self.reserve1.read() * (amount0 * (1000 + yield * 10) / 1000)),
+        //         'dy / dx != y / x'
+        //     );
+        // }
 
         // pull in underlying and principalTk
         underlying.transfer_from(get_caller_address(), get_contract_address(), amount0);
