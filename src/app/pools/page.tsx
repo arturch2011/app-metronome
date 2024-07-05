@@ -1,6 +1,6 @@
-import { PoolsCard } from "@/components/ui/poolscard";
+import { PoolsCard } from "@/components/PoolsCard";
 
-import { poolsCardData } from "../../data";
+import { poolsCardData } from "../../data/poolscard-data";
 
 export default function TradePage() {
     return (

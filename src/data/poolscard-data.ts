@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 
 import metroLogo from "../../public/metrologoc.png";
 
-type PoolCardData = {
+type PoolsCardData = {
   typeToken: string;
   legend: "UP TO" | "DOWN TO";
   percent: number;
@@ -11,7 +11,7 @@ type PoolCardData = {
   maturity: number;
 };
 
-export const poolsCardData: PoolCardData[]  = [
+export const poolsCardData: PoolsCardData[]  = [
   {
     typeToken: "MTK",
     legend: "UP TO",
