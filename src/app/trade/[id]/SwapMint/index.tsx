@@ -3,7 +3,11 @@ import { Swap } from "./Swap";
 import { useState } from "react";
 import { IoSettingsSharp } from "react-icons/io5";
 
-export const SwapMint = () => {
+interface SwapMintProps {
+  id: string;
+}
+
+export const SwapMint = ({ id }: SwapMintProps) => {
   const [isSwap, setIsSwap] = useState(true);
 
   return (
@@ -35,7 +39,12 @@ export const SwapMint = () => {
         </button>
       </div>
       {isSwap ? (
-        <Swap isPt={true} address="oi" />
+        <Swap
+          isPt={true}
+          address={id}
+          pt="0x04a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7"
+          yt="0x07363bb886c801a7c620a953e981cfc209dbd8370d8f4ff8a1df6b8eaec51642"
+        />
       ) : (
         <Mint address="oi" />
       )}

@@ -14,7 +14,12 @@ import contractAbi from "../../../../../abis/abi.json";
 import myTokenAbi from "../../../../../abis/mTAbi.json";
 import { motion } from "framer-motion";
 import { FaLongArrowAltDown } from "react-icons/fa";
-import { useState, useMemo } from "react";
+import { useState, useMemo, use } from "react";
+
+require("dotenv").config();
+
+const simpleAddr = process.env.SIMPLE_ADDR;
+const mtkAddr = process.env.MTK_ADDR;
 
 interface MintProps {
     address: string;
@@ -24,13 +29,14 @@ export const Mint = ({ address }: MintProps) => {
     const { address: userAddress } = useAccount();
     const [showPopup, setShowPopup] = useState(false);
     const [amount, setAmount] = useState(0);
+
     const {
         isLoading: balanceIsLoading,
         isError: balanceIsError,
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d",
+        token: "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821",
         address: userAddress,
         watch: true,
     });
@@ -41,7 +47,7 @@ export const Mint = ({ address }: MintProps) => {
         error: balancePTError,
         data: balancePTData,
     } = useBalance({
-        token: "0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7",
+        token: "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe",
         address: userAddress,
         watch: true,
     });
@@ -51,7 +57,7 @@ export const Mint = ({ address }: MintProps) => {
         error: balanceYTError,
         data: balanceYTData,
     } = useBalance({
-        token: "0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c",
+        token: "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739",
         address: userAddress,
         watch: true,
     });
@@ -60,10 +66,10 @@ export const Mint = ({ address }: MintProps) => {
     let ytbal = "0";
     let strkbal = "0";
     const contractAddress =
-        "0x741a663dfed73e9c2850850a9b4fe4ea7829d4c92182c3858c75d648a0a024b";
+        "0x2411fba0588c3b29595275c5572d6d1e78e9f6bba293c956748d08d268816d";
 
     const myTokenAddr =
-        "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
+        "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821";
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -178,7 +184,7 @@ export const Mint = ({ address }: MintProps) => {
                     <input
                         type="number"
                         onChange={(e) => {
-                            setAmount((e.target.valueAsNumber * 10) ^ 18);
+                            setAmount(e.target.valueAsNumber);
                         }}
                         className="bg-transparent w-2/3 focus:outline-none counter p-3"
                     />
@@ -194,14 +200,14 @@ export const Mint = ({ address }: MintProps) => {
                     <p>Output</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <p className="w-2/3 p-3">10</p>
+                    <p className="w-2/3 p-3">{amount}</p>
 
                     <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
                         PT MTK
                     </div>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <p className="w-2/3 p-3">10</p>
+                    <p className="w-2/3 p-3">{amount}</p>
 
                     <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
                         YT MTK

@@ -39,6 +39,7 @@ export type TradeCardData = {
   longPrice: number;
   fixedPercent: number;
   fixedPrice: number;
+  address: string;
 }
 
 export const tradeCardsData: TradeCardData[] = [
@@ -54,6 +55,7 @@ export const tradeCardsData: TradeCardData[] = [
     longPrice: 38.5,
     fixedPercent: 15.0,
     fixedPrice: 3800.5,
+    address: "0x5c9d91c3b78242d6cfe399df198bf176b0910485cfb2e54e4c5d609d745083d",
   },
   {
     tokenType: "ETH",
@@ -67,5 +69,6 @@ export const tradeCardsData: TradeCardData[] = [
     longPrice: 39.5,
     fixedPercent: 17.0,
     fixedPrice: 3700.5,
+    address: "0x"
   },
 ]

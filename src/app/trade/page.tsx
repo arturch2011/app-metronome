@@ -68,7 +68,7 @@ export default function TradePage() {
       </section>
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-screen-2xl mx-auto px-10">
           {tradeCardsData.map((tradeCardData, idx) => (
-            <Link key={idx} href={`/trade/${idx}`}>
+            <Link key={idx} href={`/trade/${tradeCardData.address}`}>
               <TradeContext.Provider value={{tradeCardData}}>        
                 <TradeCard />
               </TradeContext.Provider>

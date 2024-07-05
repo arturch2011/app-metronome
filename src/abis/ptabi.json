@@ -198,10 +198,37 @@
     },
     {
         "type": "function",
-        "name": "current_rate",
+        "name": "burn",
+        "inputs": [
+            {
+                "name": "recipient",
+                "type": "core::starknet::contract_address::ContractAddress"
+            },
+            { "name": "amount", "type": "core::integer::u256" }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "get_expiry",
         "inputs": [],
-        "outputs": [{ "type": "core::integer::u256" }],
-        "state_mutability": "view"
+        "outputs": [{ "type": "core::integer::u64" }],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "set_expiry",
+        "inputs": [{ "name": "expiry", "type": "core::integer::u64" }],
+        "outputs": [],
+        "state_mutability": "external"
+    },
+    {
+        "type": "function",
+        "name": "is_expired",
+        "inputs": [],
+        "outputs": [{ "type": "core::bool" }],
+        "state_mutability": "external"
     },
     {
         "type": "event",
@@ -309,7 +336,7 @@
     },
     {
         "type": "event",
-        "name": "cairo::erc20::MyToken::Event",
+        "name": "cairo::principaltoken::PrincipalToken::Event",
         "kind": "enum",
         "variants": [
             {

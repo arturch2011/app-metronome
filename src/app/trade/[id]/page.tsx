@@ -10,10 +10,10 @@ import { GraphDashboard } from "./GraphDashboard";
 interface PtYtTradingProps {
 
 }
+import { addressMap } from "../../../data";
 
 export default function PtYtTrading({}: PtYtTradingProps) {
-  const params = useParams();
-  const id = params.id;
+  const { id } = useParams();
   const [isPt, setIsPt] = useState(false);
 
   const renderSwitchPtYtButtons = () => (
@@ -58,7 +58,7 @@ export default function PtYtTrading({}: PtYtTradingProps) {
             Go to LP
           </button>
         </div>
-        <SwapMint />
+        <SwapMint id={id.toString()} />
       </div>
       <GraphDashboard isPt={isPt} />
     </div>

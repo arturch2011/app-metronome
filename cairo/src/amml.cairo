@@ -26,8 +26,8 @@ mod Amm {
     use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
     use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
 
-    const KEY: felt252 =
-        6004514686061859652; // felt252 conversion of "STRK/USD", can also write const KEY : felt252 = 'BTC/USD';
+    // const KEY: felt252 =
+    //     6004514686061859652; // felt252 conversion of "STRK/USD", can also write const KEY : felt252 = 'BTC/USD';
 
     #[storage]
     struct Storage {
@@ -40,9 +40,9 @@ mod Amm {
     }
 
     #[constructor]
-    fn constructor(ref self: ContractState, principalTk: ContractAddress, token2: ContractAddress) {
-        self.underlying.write(principalTk);
-        self.principalTk.write(token2);
+    fn constructor(ref self: ContractState, underTk: ContractAddress, ptTk: ContractAddress) {
+        self.underlying.write(underTk);
+        self.principalTk.write(ptTk);
     }
 
     #[generate_trait]
@@ -84,23 +84,22 @@ mod Amm {
             }
             z
         }
+    // fn _get_asset_price_median(
+    //     self: @ContractState, oracle_address: ContractAddress, asset: DataType
+    // ) -> u128 {
+    //     let oracle_dispatcher = IPragmaABIDispatcher { contract_address: oracle_address };
+    //     let output: PragmaPricesResponse = oracle_dispatcher
+    //         .get_data(asset, AggregationMode::Median(()));
+    //     return output.price;
+    // }
 
-        fn _get_asset_price_median(
-            self: @ContractState, oracle_address: ContractAddress, asset: DataType
-        ) -> u128 {
-            let oracle_dispatcher = IPragmaABIDispatcher { contract_address: oracle_address };
-            let output: PragmaPricesResponse = oracle_dispatcher
-                .get_data(asset, AggregationMode::Median(()));
-            return output.price;
-        }
-
-        fn getPrice(ref self: ContractState) -> u128 {
-            let oracle_address: ContractAddress = contract_address_const::<
-                0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a
-            >();
-            let price = self._get_asset_price_median(oracle_address, DataType::SpotEntry(KEY));
-            price
-        }
+    // fn getPrice(ref self: ContractState) -> u128 {
+    //     let oracle_address: ContractAddress = contract_address_const::<
+    //         0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a
+    //     >();
+    //     let price = self._get_asset_price_median(oracle_address, DataType::SpotEntry(KEY));
+    //     price
+    // }
     }
 
     #[external(v0)]
@@ -117,15 +116,18 @@ mod Amm {
         incTk.transfer_from(get_caller_address(), get_contract_address(), amountIn);
 
         if tokenIn == self.underlying.read() { // Transfer principalTk to caller    
-            // let reserveOut = self.reserve1.read();
-            // let reserveIn = self.reserve0.read();
+            let reserveOut = self.reserve1.read();
+            let reserveIn = self.reserve0.read();
 
             // Calculate token out (inlcuding fees) fee 0.3%
             let amountInWithFee = (amountIn * 997) / 1000;
             let yield = incTk.current_rate();
 
             // let amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
-            let amountOut = amountInWithFee * (1000 - yield * 10) / 1000;
+            let mut amountOut = amountInWithFee * (1000 + yield * 10) / 1000;
+            if reserveOut < amountOut {
+                amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
+            }
 
             // Transfer token out to msg.sender
             let outTk = IMintableDispatcher { contract_address: self.principalTk.read() };
@@ -143,12 +145,18 @@ mod Amm {
             let reserveOut = self.reserve0.read();
             let reserveIn = self.reserve1.read();
 
+            let outTk = IMintableDispatcher { contract_address: self.underlying.read() };
+            let yield = outTk.current_rate();
+
             // Calculate token out (inlcuding fees) fee 0.3%
             let amountInWithFee = (amountIn * 997) / 1000;
-            let amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
-
+            let mut amountOut = amountInWithFee * (1000 - yield * 10) / 1000;
+            // let amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
+            if reserveOut < amountOut {
+                amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
+            }
             // Transfer token out to msg.sender
-            let outTk = IMintableDispatcher { contract_address: self.underlying.read() };
+
             outTk.transfer(get_caller_address(), amountOut);
 
             // Update the reserves
@@ -167,16 +175,19 @@ mod Amm {
         let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
         let mut shares: u256 = 0;
 
-        // pull in underlying and principalTk
-        underlying.transfer_from(get_caller_address(), get_contract_address(), amount0);
-        principalTk.transfer_from(get_caller_address(), get_contract_address(), amount1);
+        let yield = underlying.current_rate();
 
         if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
             assert(
-                (self.reserve0.read() * amount1) == (self.reserve1.read() * amount0),
+                (self.reserve0.read()
+                    * (amount1 * (1000 + yield * 10) / 1000)) == (self.reserve1.read() * amount0),
                 'dy / dx != y / x'
             );
         }
+
+        // pull in underlying and principalTk
+        underlying.transfer_from(get_caller_address(), get_contract_address(), amount0);
+        principalTk.transfer_from(get_caller_address(), get_contract_address(), amount1);
 
         // mint shares
         // f(x, y) = value of liquidity = sqrt(xy)
@@ -210,12 +221,16 @@ mod Amm {
         // calculate amount0 and amount1 to withdraw
         // dx = s / T * x
         // dy = s / T * y
+        assert(self.balanceOf.read(get_caller_address()) >= shares, 'Insufficient balance');
+
         let underlying = IMintableDispatcher { contract_address: self.underlying.read() };
         let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
 
         let bal0 = underlying.balance_of(get_contract_address());
         let bal1 = principalTk.balance_of(get_contract_address());
 
+        // let yield = underlying.current_rate();
+        //(amount1 * (1000 + yield * 10) / 1000)
         let amount0 = (shares * bal0) / self.totalSupply.read();
         let amount1 = (shares * bal1) / self.totalSupply.read();
         assert(amount0 > 0 && amount1 > 0, 'amount0 or amount1 = 0');

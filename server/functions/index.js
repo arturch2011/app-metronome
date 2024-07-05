@@ -18,7 +18,7 @@ exports.autoBurnAll = functions.pubsub
                 "https://starknet-sepolia.public.blastapi.io/rpc/v0_7";
             const provider = new RpcProvider({ nodeUrl: `${myNodeUrl}` });
             const contractAddress =
-                "0x1d5fed5e2be1be7ee786bdb20ea23bf738c84faa7277fdc158210caa1100f09";
+                "0x2411fba0588c3b29595275c5572d6d1e78e9f6bba293c956748d08d268816d";
 
             const privateKey0 =
                 "0x03fd565e9ec112cf0e3e36b1d28142eba322178c71668df624f43145dec2baae";

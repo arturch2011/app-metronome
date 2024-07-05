@@ -2,21 +2,25 @@ import React from "react";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 
-export interface YieldCardProps {
-  link: string;
-  typeToken: string;
-  legend: "UP TO" | "DOWN TO";
-  percent: number;
-  logoPath: StaticImageData;
+export interface PoolsCardProps {
+    link: string;
+    typeToken: string;
+    legend: "UP TO" | "DOWN TO";
+    percent: number;
+    logoPath: StaticImageData;
+    tvl: number;
+    maturity: number;
 }
 
-export const YieldCard = ({
+export const PoolsCard = ({
     link,
     legend,
     percent,
     logoPath,
     typeToken,
-}: YieldCardProps) => {
+    tvl,
+    maturity,
+}: PoolsCardProps) => {
     const isPercentNegative = percent < 0;
 
     return (
@@ -33,17 +37,26 @@ export const YieldCard = ({
             transition duration-700"
                 >
                     <header className="text-2xl font-bold mb-4">
-                        {typeToken}
+                        {typeToken} Pool
                     </header>
-                    <p>{legend}</p>
                     <p
                         className={`
               text-2xl font-bold 
               ${isPercentNegative ? "text-red-400" : "text-green-400"}
             `}
                     >
-                        {`${percent.toFixed(2)} %`}
+                        {`${percent.toFixed(2)} %`} p.a.
                     </p>
+                    <p>
+                        <span className="font-bold text-xl">
+                            ${tvl.toFixed(2)}{" "}
+                        </span>
+                        tvl
+                    </p>
+                    <div className="w-full flex justify-between items-center pt-4">
+                        <p>Maturity</p>
+                        <p>{`${maturity} days`}</p>
+                    </div>
                     <Image
                         src={logoPath}
                         alt="strk logo"
