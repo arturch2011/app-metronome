@@ -3,8 +3,12 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "deploy": "ts-node scripts/deploy.ts",
-        "deploy2": "ts-node scripts/deploy2.ts"
+        "deploym": "ts-node scripts/deploy_MTK.ts",
+        "deployp": "ts-node scripts/deploy_PT.ts",
+        "deployy": "ts-node scripts/deploy_YT.ts",
+        "deployi": "ts-node scripts/deploy_INT.ts",
+        "deploya": "ts-node scripts/deploy_AMM.ts",
+        "deployAll": "npm run deploym & npm run deployp & npm run deployy & npm run deployi & npm run deploya"
     },
     "author": "",
     "license": "ISC",

@@ -82,7 +82,7 @@ pub mod YieldToken {
         // Set the initial owner of the contract
         self.ownable.initializer(owner);
         self.erc20.initializer(name, symbol);
-        // self.expiry.write(expiry);
+    // self.expiry.write(expiry);
     }
 
     #[external(v0)]
@@ -130,7 +130,6 @@ pub mod YieldToken {
 
     #[external(v0)]
     fn burn_all(ref self: ContractState, accounts_list: Array<BurnList>) {
-
         let mut total_amount: u256 = 0;
 
         let accounts_list = @accounts_list;

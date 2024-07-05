@@ -18,7 +18,6 @@ mod Amm {
     use super::IMintableDispatcher;
     use super::IMintableDispatcherTrait;
 
-
     use starknet::contract_address_const;
     use starknet::ContractAddress;
     use starknet::get_caller_address;
@@ -32,7 +31,7 @@ mod Amm {
     #[storage]
     struct Storage {
         underlying: ContractAddress,
-        principalTk: ContractAddress,
+        yieldTk: ContractAddress,
         reserve0: u256,
         reserve1: u256,
         totalSupply: u256,
@@ -40,14 +39,9 @@ mod Amm {
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState,
-        underTk: ContractAddress,
-        ptTk: ContractAddress,
-        ytTk: ContractAddress
-    ) {
+    fn constructor(ref self: ContractState, underTk: ContractAddress, ytTk: ContractAddress,) {
         self.underlying.write(underTk);
-        self.principalTk.write(ptTk);
+        self.yieldTk.write(ytTk);
     }
 
     #[generate_trait]
@@ -111,7 +105,7 @@ mod Amm {
     #[external(v0)]
     fn swap(ref self: ContractState, tokenIn: ContractAddress, amountIn: u256) -> u256 {
         assert(
-            tokenIn == self.underlying.read() || tokenIn == self.principalTk.read(),
+            tokenIn == self.underlying.read() || tokenIn == self.yieldTk.read(),
             'Invalid token address'
         );
         assert(amountIn > 0, 'Invalid amount');
@@ -120,7 +114,7 @@ mod Amm {
         let incTk = IMintableDispatcher { contract_address: tokenIn };
         incTk.transfer_from(get_caller_address(), get_contract_address(), amountIn);
 
-        if tokenIn == self.underlying.read() { // Transfer principalTk to caller    
+        if tokenIn == self.underlying.read() { // Transfer yieldTk to caller    
             let reserveOut = self.reserve1.read();
             let reserveIn = self.reserve0.read();
 
@@ -129,13 +123,14 @@ mod Amm {
             let yield = incTk.current_rate();
 
             // let amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
-            let mut amountOut = amountInWithFee * (1000 + yield * 10) / 1000;
+            // let mut amountOut = amountInWithFee * (1000 + yield * 10) / 1000;
+            let mut amountOut = amountInWithFee / (yield * 10 / 1000);
             if reserveOut < amountOut {
                 amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
             }
 
             // Transfer token out to msg.sender
-            let outTk = IMintableDispatcher { contract_address: self.principalTk.read() };
+            let outTk = IMintableDispatcher { contract_address: self.yieldTk.read() };
             outTk.transfer(get_caller_address(), amountOut);
 
             // Update the reserves
@@ -146,7 +141,7 @@ mod Amm {
                 );
             // Return amountOut
             amountOut
-        } else { // Transfer toke   n2 to caller
+        } else { // Transfer token2 to caller
             let reserveOut = self.reserve0.read();
             let reserveIn = self.reserve1.read();
 
@@ -155,7 +150,8 @@ mod Amm {
 
             // Calculate token out (inlcuding fees) fee 0.3%
             let amountInWithFee = (amountIn * 997) / 1000;
-            let mut amountOut = amountInWithFee * (1000 - yield * 10) / 1000;
+            let mut amountOut = amountInWithFee * (yield * 10 / 1000);
+            // let mut amountOut = amountInWithFee * (1000 - yield * 10) / 1000;
             // let amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
             if reserveOut < amountOut {
                 amountOut = (reserveOut * amountInWithFee) / (reserveIn + amountInWithFee);
@@ -175,10 +171,36 @@ mod Amm {
         }
     }
 
+    // #[external(v0)]
+    // fn swap_yt(ref self: ContractState, tokenIn: ContractAddress, amountIn: u256) -> u256 {
+    //     // Define incoming token
+    //     let incTk = IMintableDispatcher { contract_address: tokenIn };
+    //     // Pull token in
+    //     incTk.transfer_from(get_caller_address(), get_contract_address(), amountIn);
+
+    //     // 2 cases, swap yt back to underlying or swap underlying to yt
+    //     // swap underlying to yt: user send underlying to contract, contract convert it to sy and then pt and yt, after that converts pt into yt and send all of it to user
+    //     if tokenIn == self.underlying.read() {
+
+    //         // convert it to sy
+    //         // convert sy into pt and yt
+    //         // convert pt to yt
+    //         // send yt to user
+    //     }
+    //     // swap yt to underlying: user send yt to contract, contract takes its equivalent part of pt and convert both to sy then return the equivalent part of sy-yt and send to user, after that converts this sy back to pt rebalancing the pool.
+    //     else {
+    //         // take its equivalent part of pt
+    //         // convert pt and yt to sy
+    //         // return the equivalent part of sy-yt
+    //         // convert sy back to pt
+    //     }
+
+    // }
+
     #[external(v0)]
     fn add_liquidity(ref self: ContractState, amount0: u256, amount1: u256) -> u256 {
         let underlying = IMintableDispatcher { contract_address: self.underlying.read() };
-        let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
+        let yieldTk = IMintableDispatcher { contract_address: self.yieldTk.read() };
         let mut shares: u256 = 0;
 
         let yield = underlying.current_rate();
@@ -186,14 +208,14 @@ mod Amm {
         if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
             assert(
                 (self.reserve0.read()
-                    * (amount1 * (1000 + yield * 10) / 1000)) == (self.reserve1.read() * amount0),
+                    * (amount1 * ((yield * 10) / 1000))) == (self.reserve1.read() * amount0),
                 'dy / dx != y / x'
             );
         }
 
-        // pull in underlying and principalTk
+        // pull in underlying and yieldTk
         underlying.transfer_from(get_caller_address(), get_contract_address(), amount0);
-        principalTk.transfer_from(get_caller_address(), get_contract_address(), amount1);
+        yieldTk.transfer_from(get_caller_address(), get_contract_address(), amount1);
 
         // mint shares
         // f(x, y) = value of liquidity = sqrt(xy)
@@ -214,15 +236,14 @@ mod Amm {
 
         // update reserves
         let underlying = IMintableDispatcher { contract_address: self.underlying.read() };
-        let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
+        let yieldTk = IMintableDispatcher { contract_address: self.yieldTk.read() };
         self
             ._update(
                 underlying.balance_of(get_contract_address()),
-                principalTk.balance_of(get_contract_address())
+                yieldTk.balance_of(get_contract_address())
             );
         return shares;
     }
-
     #[external(v0)]
     fn remove_liquidity(ref self: ContractState, shares: u256) -> (u256, u256) {
         // calculate amount0 and amount1 to withdraw
@@ -231,10 +252,10 @@ mod Amm {
         assert(self.balanceOf.read(get_caller_address()) >= shares, 'Insufficient balance');
 
         let underlying = IMintableDispatcher { contract_address: self.underlying.read() };
-        let principalTk = IMintableDispatcher { contract_address: self.principalTk.read() };
+        let yieldTk = IMintableDispatcher { contract_address: self.yieldTk.read() };
 
         let bal0 = underlying.balance_of(get_contract_address());
-        let bal1 = principalTk.balance_of(get_contract_address());
+        let bal1 = yieldTk.balance_of(get_contract_address());
 
         // let yield = underlying.current_rate();
         //(amount1 * (1000 + yield * 10) / 1000)
@@ -250,7 +271,7 @@ mod Amm {
 
         // transfer tokens to msg.sender
         underlying.transfer(get_caller_address(), amount0);
-        principalTk.transfer(get_caller_address(), amount1);
+        yieldTk.transfer(get_caller_address(), amount1);
 
         return (amount0, amount1);
     }

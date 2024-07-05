@@ -6,12 +6,12 @@ export async function getCompiledCode(filename: string) {
         __dirname,
         `../target/dev/${filename}.contract_class.json`
     );
-    console.log(sierraFilePath);
+    // console.log(sierraFilePath);
     const casmFilePath = path.join(
         __dirname,
         `../target/dev/${filename}.compiled_contract_class.json`
     );
-    console.log(casmFilePath);
+    // console.log(casmFilePath);
 
     const code = [sierraFilePath, casmFilePath].map(async (filePath) => {
         const file = await fs.readFile(filePath);
