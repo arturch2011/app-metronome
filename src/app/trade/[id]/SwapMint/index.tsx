@@ -1,5 +1,5 @@
-import { Mint } from "@/components/mint";
-import { Swap } from "@/components/swap";
+import { Mint } from "./Mint";
+import { Swap } from "./Swap";
 import { useState } from "react";
 import { IoSettingsSharp } from "react-icons/io5";
 

@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
-import { useMemo } from "react";
-import Link from "next/link";
-import logo from "../../../public/metrologoc.png";
 
-const Navbar = () => {
+import metroLogo from "../../public/metrologoc.png";
+
+export const Navbar = () => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
@@ -67,7 +67,7 @@ const Navbar = () => {
                     <div className="w-full flex items-center justify-between">
                         <div className="flex justify-center items-center gap-8">
                             <Image
-                                src={logo}
+                                src={metroLogo}
                                 alt="logo"
                                 width={35}
                                 height={35}
@@ -258,5 +258,3 @@ const Navbar = () => {
         </motion.nav>
     );
 };
-
-export default Navbar;

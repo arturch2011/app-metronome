@@ -1,6 +1,6 @@
 "use client";
 
-import { YieldCard } from "@/components/ui/YieldCard";
+import { YieldCard } from "@/components/YieldCard";
 
 import { yieldCardData } from "../data/trade-data";
 

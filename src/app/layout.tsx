@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
-import { StarknetProvider } from "@/components/starknet-provider";
+import { StarknetProvider } from "../utils/starknet-provider";
+import { Navbar } from "@/components/Navbar";
+import { Particles } from "@/components/Particles";
+
 import "./globals.css";
-import Navbar from "@/components/layout/navbar";
-import { Particles } from "@/components/particles";
 
 const cairo = Cairo({ subsets: ["latin"] });
 

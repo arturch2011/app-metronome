@@ -1,6 +1,6 @@
 import metroLogo from "../../public/metrologoc.png";
 import ethLogo from "../../public/eth.png";
-import { YieldCardProps } from "@/components/ui/YieldCard";
+import { YieldCardProps } from "@/components/YieldCard";
 import { StaticImageData } from "next/image";
 
 

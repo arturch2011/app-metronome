@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import {
     useBlockNumber,
@@ -11,20 +9,22 @@ import {
     useExplorer,
     useWaitForTransaction,
 } from "@starknet-react/core";
-import contractAbi from "../abis/abi.json";
-import myTokenAbi from "../abis/mTAbi.json";
+import contractAbi from "../../../../../abis/abi.json";
+import myTokenAbi from "../../../../../abis/mTAbi.json";
+import { MdSwapVert } from "react-icons/md";
 import { motion } from "framer-motion";
-import { FaLongArrowAltDown } from "react-icons/fa";
-import { useState, useMemo, use } from "react";
+import { useState, useMemo } from "react";
 
-interface MintProps {
+interface SwapProps {
+    isPt: boolean;
     address: string;
 }
 
-export const Mint = ({ address }: MintProps) => {
+export const Swap = ({ isPt, address }: SwapProps) => {
     const { address: userAddress } = useAccount();
-    const [showPopup, setShowPopup] = useState(false);
     const [amount, setAmount] = useState(0);
+    const [showPopup, setShowPopup] = useState(false);
+
     const {
         isLoading: balanceIsLoading,
         isError: balanceIsError,
@@ -94,21 +94,13 @@ export const Mint = ({ address }: MintProps) => {
     const calls = useMemo(() => {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
-        const decimals = 18; // Número de casas decimais do token (verifique no contrato!)
-        const amountInWei = BigInt(amount ? amount * 10 ** 18 : 0); // Assumindo 18 casas decimais
 
         // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
-        return [
-            contractaprov.contract?.populateTransaction["approve"]!(
-                contractAddress,
-                { low: amountInWei ? amountInWei : 0, high: 0 }
-            ),
-            contract.populateTransaction["stake"]!({
-                low: amountInWei ? amountInWei : 0,
-                high: 0,
-            }),
-        ];
-    }, [contract, userAddress, amount, contractaprov.contract]);
+        return contract.populateTransaction["stake"]!({
+            low: amount ? amount : 0,
+            high: 0,
+        });
+    }, [contract, userAddress, amount]);
 
     const {
         writeAsync,
@@ -151,7 +143,7 @@ export const Mint = ({ address }: MintProps) => {
 
     const buttonContent = () => {
         if (writeIsPending) {
-            return <LoadingState message="Mint..." />;
+            return <LoadingState message="Swap..." />;
         }
 
         if (waitIsLoading) {
@@ -166,11 +158,11 @@ export const Mint = ({ address }: MintProps) => {
             return "Transaction confirmed";
         }
 
-        return "Mint";
+        return "Swap";
     };
     return (
         <>
-            <div className="w-full   flex flex-col items-start  ">
+            <div className="w-full  flex flex-col items-start  ">
                 <div className="w-full flex justify-between mb-1">
                     <p>Input</p>
                     <p>Balance: {Number(strkbal).toFixed(2)}</p>
@@ -190,23 +182,22 @@ export const Mint = ({ address }: MintProps) => {
                         MTK
                     </button>
                 </div>
-                <FaLongArrowAltDown className="self-center text-primary text-4xl  h-6 mt-4" />
-                <div className="w-full flex justify-start mb-1">
-                    <p>Output</p>
-                </div>
-                <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <p className="w-2/3 p-3">10</p>
+                <MdSwapVert className="self-center text-primary text-4xl my-2" />
 
-                    <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
-                        PT MTK
-                    </div>
-                </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <p className="w-2/3 p-3">10</p>
-
-                    <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
-                        YT MTK
-                    </div>
+                    <input
+                        type="number"
+                        onChange={(e) => {
+                            setAmount((e.target.valueAsNumber * 10) ^ 18);
+                        }}
+                        className="bg-transparent w-2/3 focus:outline-none counter p-3"
+                    />
+                    <button
+                        onClick={() => setShowPopup(true)}
+                        className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
+                    >
+                        STRK
+                    </button>
                 </div>
                 <button
                     onClick={handleSubmit}

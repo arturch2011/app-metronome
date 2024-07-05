@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@amcharts/amcharts5": "^5.9.13",
+        "@phosphor-icons/react": "^2.1.7",
         "@starknet-react/chains": "^0.1.0",
         "@starknet-react/core": "^2.1.0",
         "date-fns": "^3.6.0",
