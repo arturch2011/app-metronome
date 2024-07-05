@@ -9,12 +9,12 @@ export default function TradePage() {
                 <div className="flex justify-between items-center w-full max-w-screen-2xl mx-auto">
                     <div className="flex flex-col gap-6">
                         <h1 className="text-5xl font-bold">Liquidity Pools</h1>
-                        <p className="text-xl max-w-96">
+                        {/* <p className="text-xl max-w-96">
                             Exit anytime at market price. Liquidity provision
                             with minimal IL. Each pool consists of underlying
                             asset and PT (redeemable for underlying at
                             maturity).
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </section>

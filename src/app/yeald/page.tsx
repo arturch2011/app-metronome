@@ -11,21 +11,31 @@ import {
     useExplorer,
     useWaitForTransaction,
 } from "@starknet-react/core";
-import contractAbi from "../../abis/abi.json";
+import contractAbi from "../../abis/siabi.json";
 import myTokenAbi from "../../abis/mTAbi.json";
-
+import { motion } from "framer-motion";
+import { FaLongArrowAltDown } from "react-icons/fa";
 import { useState, useMemo, use } from "react";
+
+require("dotenv").config();
+
+const simpleAddr = process.env.NEXT_PUBLIC_SIMPLE_ADDR || "";
+const mtkAddr = process.env.NEXT_PUBLIC_MTK_ADDR || "";
+const ptkAddr = process.env.NEXT_PUBLIC_PT_ADDR || "";
+const ytkAddr = process.env.NEXT_PUBLIC_YT_ADDR || "";
 
 export default function Yeald() {
     const { address: userAddress } = useAccount();
+    const [showPopup, setShowPopup] = useState(false);
     const [amount, setAmount] = useState(0);
+
     const {
         isLoading: balanceIsLoading,
         isError: balanceIsError,
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d",
+        token: mtkAddr,
         address: userAddress,
         watch: true,
     });
@@ -36,7 +46,7 @@ export default function Yeald() {
         error: balancePTError,
         data: balancePTData,
     } = useBalance({
-        token: "0x4a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7",
+        token: ptkAddr,
         address: userAddress,
         watch: true,
     });
@@ -46,7 +56,7 @@ export default function Yeald() {
         error: balanceYTError,
         data: balanceYTData,
     } = useBalance({
-        token: "0x3385fb8e251835ba5b7178e2fb4acf551e5e63d8faea3a3bda4f26e4ac3222c",
+        token: ytkAddr,
         address: userAddress,
         watch: true,
     });
@@ -54,11 +64,9 @@ export default function Yeald() {
     let ptbal = "0";
     let ytbal = "0";
     let strkbal = "0";
-    const contractAddress =
-        "0x741a663dfed73e9c2850850a9b4fe4ea7829d4c92182c3858c75d648a0a024b";
+    const contractAddress = simpleAddr;
 
-    const myTokenAddr =
-        "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
+    const myTokenAddr = mtkAddr;
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -89,16 +97,19 @@ export default function Yeald() {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
         const decimals = 18; // Número de casas decimais do token (verifique no contrato!)
-        const amountInWei = BigInt(amount ? amount*10**18 : 0) ; // Assumindo 18 casas decimais
+        const amountInWei = BigInt(amount ? amount * 10 ** 18 : 0); // Assumindo 18 casas decimais
 
         // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
         return [
-            contractaprov.contract?.populateTransaction["approve"]!(contractAddress,{ low: (amountInWei ? amountInWei : 0), high: 0 }),
+            contractaprov.contract?.populateTransaction["approve"]!(
+                contractAddress,
+                { low: amountInWei ? amountInWei : 0, high: 0 }
+            ),
             contract.populateTransaction["stake"]!({
                 low: amountInWei ? amountInWei : 0,
                 high: 0,
-            })
-        ]
+            }),
+        ];
     }, [contract, userAddress, amount, contractaprov.contract]);
 
     const {
@@ -142,7 +153,7 @@ export default function Yeald() {
 
     const buttonContent = () => {
         if (writeIsPending) {
-            return <LoadingState message="Send..." />;
+            return <LoadingState message="Mint..." />;
         }
 
         if (waitIsLoading) {
@@ -157,9 +168,8 @@ export default function Yeald() {
             return "Transaction confirmed";
         }
 
-        return "Send";
+        return "Mint";
     };
-
     return (
         <div className="min-h-screen w-full">
             <section className=" py-28 px-10 w-full flex items-center justify-center">
@@ -229,10 +239,7 @@ export default function Yeald() {
                             <input
                                 type="number"
                                 onChange={(e) => {
-                                     
-                                   
-                                        setAmount(e.target.valueAsNumber)
-                                    
+                                    setAmount(e.target.valueAsNumber);
                                 }}
                                 className="bg-transparent ml-2 focus:outline-none counter p-3"
                             />

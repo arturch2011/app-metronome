@@ -9,11 +9,11 @@ export default function TradePage() {
                 <div className="flex justify-between items-center w-full max-w-screen-2xl mx-auto">
                     <div className="flex flex-col gap-6">
                         <h1 className="text-5xl font-bold">Trading Markets</h1>
-                        <p className="text-xl max-w-96">
+                        {/* <p className="text-xl max-w-96">
                             Exit anytime at market price. All yield is streamed
                             to YT until maturity. PT can be redeemed for the
                             underlying asset after maturity.
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </section>
