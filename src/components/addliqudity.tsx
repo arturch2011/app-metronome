@@ -198,7 +198,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         <>
             <div className="w-full   flex flex-col items-start  ">
                 <div className="w-full flex justify-between mb-1">
-                    <p>Underlyne Input</p>
+                    <p>Underlying Input</p>
                     <p>Balance: {Number(strkbal).toFixed(2)}</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden">

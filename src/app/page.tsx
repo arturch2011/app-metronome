@@ -23,7 +23,7 @@ export default function Home() {
                 {yieldCardData.map((data, idx) => (
                     <YieldCard
                         key={idx}
-                        link="/yeald"
+                        link="/yield"
                         typeToken={data.typeToken}
                         legend={data.legend}
                         percent={data.percent}

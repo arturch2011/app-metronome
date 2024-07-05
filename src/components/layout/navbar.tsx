@@ -78,12 +78,12 @@ const Navbar = () => {
                             >
                                 PoC
                             </Link>
-                            <Link
+                            {/* <Link
                                 href="/swap"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
                                 Swap
-                            </Link>
+                            </Link> */}
                             <Link
                                 href="/pools"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"

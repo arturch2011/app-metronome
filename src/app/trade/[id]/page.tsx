@@ -54,11 +54,8 @@ export default function PtYtTrading() {
 
                 setYields(formatedYields);
             } catch (err: any) {
-                console.log("BBBBBBBBBBBBBBBBBBBBB");
-
                 setError(err.message);
             } finally {
-                console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCBB");
                 setIsLoading(false);
             }
         }
@@ -181,7 +178,7 @@ export default function PtYtTrading() {
                                 </div>
                             </div>
                             <div className="w-full p-4 backdrop-blur-sm bg-white/5  rounded-xl flex items-center">
-                                Maturity 31 days
+                                Maturity 20 days
                             </div>
                         </div>
                         <div

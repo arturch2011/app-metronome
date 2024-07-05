@@ -53,6 +53,7 @@ export const TradeCard = ({
                         <p className=" font-bold ">Liquidity</p>
                         <p>
                             <span className="text-cprimary">
+                                $
                                 {numeral(trade.liquidityValue).format("0,0.00")}
                             </span>
                         </p>

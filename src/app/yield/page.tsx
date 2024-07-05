@@ -198,7 +198,7 @@ export default function Yeald() {
                         <p>
                             The proof of concept requires that when a user
                             transfers a MTK token, two tokens are generated, one
-                            PT(main token) and one YT(yeald token).
+                            PT(principal token) and one YT(yield token).
                         </p>
                     </div>
                     <div className="w-full p-5 backdrop-blur-sm bg-white/5 rounded-xl flex flex-col items-start gap-8 ">

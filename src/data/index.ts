@@ -39,8 +39,8 @@ export const poolsCardData: PoolsCardData[]  = [
     legend: "UP TO",
     percent: 5.00,
     logoPath: metroLogo,
-    tvl: 20,
-    maturity: 11,
+    tvl: 200000000,
+    maturity: 20,
   },
 ]
 
