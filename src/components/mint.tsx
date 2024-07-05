@@ -19,8 +19,8 @@ import { useState, useMemo, use } from "react";
 
 require("dotenv").config();
 
-const simpleAddr = process.env.SIMPLE_ADDR;
-const mtkAddr = process.env.MTK_ADDR;
+const simpleAddr = process.env.NEXT_PUBLIC_SIMPLE_ADDR || "";
+const mtkAddr = process.env.NEXT_PUBLIC_MTK_ADDR || "";
 
 interface MintProps {
     address: string;
@@ -66,11 +66,9 @@ export const Mint = ({ address }: MintProps) => {
     let ptbal = "0";
     let ytbal = "0";
     let strkbal = "0";
-    const contractAddress =
-        "0x2411fba0588c3b29595275c5572d6d1e78e9f6bba293c956748d08d268816d";
+    const contractAddress = simpleAddr;
 
-    const myTokenAddr =
-        "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821";
+    const myTokenAddr = mtkAddr;
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;

@@ -18,6 +18,14 @@ import { MdSwapVert } from "react-icons/md";
 import { motion } from "framer-motion";
 import { useState, useMemo, use } from "react";
 
+require("dotenv").config();
+
+const mtkAddr = process.env.NEXT_PUBLIC_MTK_ADDR || "";
+const ptkAddr = process.env.NEXT_PUBLIC_PT_ADDR || "";
+const ytkAddr = process.env.NEXT_PUBLIC_YT_ADDR || "";
+const contractAddr = process.env.NEXT_PUBLIC_AMM_ADDR || "";
+const contractYt = process.env.NEXT_PUBLIC_AMMY_ADDR || "";
+
 interface SwapProps {
     isPt: boolean;
     address: string;
@@ -36,7 +44,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821",
+        token: mtkAddr,
         address: userAddress,
         watch: true,
     });
@@ -47,7 +55,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
         error: balancePTError,
         data: balancePTData,
     } = useBalance({
-        token: "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe",
+        token: ptkAddr,
         address: userAddress,
         watch: true,
     });
@@ -57,7 +65,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
         error: balanceYTError,
         data: balanceYTData,
     } = useBalance({
-        token: "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739",
+        token: ytkAddr,
         address: userAddress,
         watch: true,
     });
@@ -65,16 +73,16 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
     let ptbal = "0";
     let ytbal = "0";
     let strkbal = "0";
-    const contractAddress =
-        "0x7f719b976b83c89f6bbd582f61d00326df9bdf10479203be465a8fa13c035c1";
 
-    const myTokenAddr =
-        "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821";
-
-    const ptAddress =
-        "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe";
-    const ytAddress =
-        "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739";
+    let contractAddress = "";
+    let sendingToken = "";
+    if (isPt) {
+        contractAddress = contractAddr;
+        sendingToken = ptkAddr;
+    } else {
+        sendingToken = ytkAddr;
+        contractAddress = contractYt;
+    }
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -93,15 +101,15 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
     });
     const contractapprove = useContract({
         abi: myTokenAbi,
-        address: myTokenAddr,
+        address: mtkAddr,
     });
     const { contract: contractpt } = useContract({
         abi: ptTokenAbi,
-        address: ptAddress,
+        address: ptkAddr,
     });
     const { contract: contractyt } = useContract({
         abi: ytTokenAbi,
-        address: ytAddress,
+        address: ytkAddr,
     });
 
     const handleSubmit = async () => {
@@ -138,7 +146,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
                     high: 0,
                 }
             ),
-            contract.populateTransaction["swap"]!(ptAddress, {
+            contract.populateTransaction["swap"]!(sendingToken, {
                 low: amountInWei ? amountInWei : 0,
                 high: 0,
             }),
@@ -208,7 +216,12 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
             <div className="w-full  flex flex-col items-start  ">
                 <div className="w-full flex justify-between mb-1">
                     <p>Input</p>
-                    <p>Balance: {Number(ptbal).toFixed(2)}</p>
+                    <p>
+                        Balance:{" "}
+                        {isPt
+                            ? Number(ptbal).toFixed(2)
+                            : Number(ytbal).toFixed(2)}
+                    </p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden">
                     <input
@@ -222,7 +235,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
                         onClick={() => setShowPopup(true)}
                         className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
                     >
-                        PT MTK
+                        {isPt ? "PT MTK" : "YT MTK"}
                     </button>
                 </div>
                 <MdSwapVert className="self-center text-primary text-4xl my-2" />

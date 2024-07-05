@@ -17,13 +17,16 @@ import { MdAdd } from "react-icons/md";
 import contractAbi from "../abis/ammabi.json";
 import myTokenAbi from "../abis/mTAbi.json";
 import ptTokenAbi from "../abis/ptabi.json";
+import ytTokenAbi from "../abis/ytabi.json";
 
 import { useState, useMemo, use } from "react";
 
 require("dotenv").config();
 
-const simpleAddr = process.env.SIMPLE_ADDR;
-const mtkAddr = process.env.MTK_ADDR;
+const mtkAddr = process.env.NEXT_PUBLIC_MTK_ADDR || "";
+const ptkAddr = process.env.NEXT_PUBLIC_PT_ADDR || "";
+const ytkAddr = process.env.NEXT_PUBLIC_YT_ADDR || "";
+const contractAddr = process.env.NEXT_PUBLIC_AMMY_ADDR || "";
 
 interface AddLiqProps {
     address: string;
@@ -40,7 +43,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         error: balanceError,
         data: balanceData,
     } = useBalance({
-        token: "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821",
+        token: mtkAddr,
         address: userAddress,
         watch: true,
     });
@@ -51,7 +54,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         error: balancePTError,
         data: balancePTData,
     } = useBalance({
-        token: "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe",
+        token: ptkAddr,
         address: userAddress,
         watch: true,
     });
@@ -61,7 +64,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         error: balanceYTError,
         data: balanceYTData,
     } = useBalance({
-        token: "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739",
+        token: ytkAddr,
         address: userAddress,
         watch: true,
     });
@@ -69,14 +72,11 @@ export const AddLiq = ({ address }: AddLiqProps) => {
     let ptbal = "0";
     let ytbal = "0";
     let strkbal = "0";
-    const contractAddress =
-        "0x1f2e02b552bac62c90a0b2b69a23ce7dcc3072e436cdc72df22aedf8cf32747";
+    const contractAddress = contractAddr;
 
-    const myTokenAddr =
-        "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821";
+    const myTokenAddr = mtkAddr;
 
-    const ptAddress =
-        "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe";
+    const ptAddress = ptkAddr;
 
     if (!balanceIsLoading && !balanceIsError) {
         strkbal = balanceData?.formatted!;
@@ -103,6 +103,11 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         address: ptAddress,
     });
 
+    const contractyt = useContract({
+        abi: ytTokenAbi,
+        address: ytkAddr,
+    });
+
     const handleSubmit = async () => {
         // TO DO: Implement Starknet logic here
         writeAsync();
@@ -112,7 +117,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
         if (!userAddress || !contract) return [];
         console.log(userAddress);
         const decimals = 18; // Número de casas decimais do token (verifique no contrato!)
-        const amountplus = amount ? amount * 1.05 : 0;
+        const amountplus = amount ? amount * 20 : 0;
         const amountInWei = BigInt(amount ? amount * 10 ** 18 : 0); // Assumindo 18 casas decimais
         const amountplusInWei = BigInt(amountplus * 10 ** 18); // Assumindo 18 casas decimais
 
@@ -122,7 +127,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
                 contractAddress,
                 { low: amountInWei ? amountInWei : 0, high: 0 }
             ),
-            contractpt.contract?.populateTransaction["approve"]!(
+            contractyt.contract?.populateTransaction["approve"]!(
                 contractAddress,
                 { low: amountplusInWei ? amountplusInWei : 0, high: 0 }
             ),
@@ -222,7 +227,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
                     <p>PT Input</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden ">
-                    <p className="w-2/3 p-3">{(amount * 1.05).toFixed(2)}</p>
+                    <p className="w-2/3 p-3">{(amount * 20).toFixed(2)}</p>
 
                     <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
                         PT MTK

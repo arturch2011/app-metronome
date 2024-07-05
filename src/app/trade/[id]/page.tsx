@@ -35,7 +35,6 @@ export default function PtYtTrading() {
     useEffect(() => {
         async function fetchYields() {
             try {
-                console.log(`AAAAAAAAAAAAAAAAAAAAA`);
                 const response = await fetch(
                     "https://metronome-indexer.onrender.com/api/v1/nststrk_yields"
                 );
@@ -47,7 +46,7 @@ export default function PtYtTrading() {
 
                 const formatedYields = data.map(
                     (yieldData: any, index: number) => ({
-                        date: index + 1,
+                        name: index + 1,
                         Implied: yieldData.apy,
                         Underlying: yieldData.implicit_apy,
                     })
@@ -156,7 +155,7 @@ export default function PtYtTrading() {
                             </div>
                             {isSwap ? (
                                 <Swap
-                                    isPt={true}
+                                    isPt={isPt}
                                     address={id.toString()}
                                     pt="0x04a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7"
                                     yt="0x07363bb886c801a7c620a953e981cfc209dbd8370d8f4ff8a1df6b8eaec51642"
@@ -177,12 +176,12 @@ export default function PtYtTrading() {
                                     className=" bg-baser  rounded-full border-2 border-primary"
                                 />
                                 <div className="flex flex-col items-start">
-                                    <p>PT MTK</p>
+                                    <p>{isPt ? "PT MTK" : "YT MTK"}</p>
                                     <p>My Token Metronome</p>
                                 </div>
                             </div>
                             <div className="w-full p-4 backdrop-blur-sm bg-white/5  rounded-xl flex items-center">
-                                Maturity
+                                Maturity 31 days
                             </div>
                         </div>
                         <div
