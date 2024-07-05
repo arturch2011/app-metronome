@@ -214,10 +214,10 @@ export default function PtYtTrading() {
                                 <div>
                                     <div className="flex w-full items-center justify-start gap-4 mb-4">
                                         <p className="text-2xl font-bold">
-                                            21.30%
+                                            5.8%
                                         </p>
                                         <p className="text-green-400 text-xl">
-                                            50% (Past 7d)
+                                            20.8% (Past 7d)
                                         </p>
                                     </div>
                                     <p>

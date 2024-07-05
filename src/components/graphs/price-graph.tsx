@@ -109,10 +109,10 @@ export const Graph = ({ initialData }: GraphProps) => {
             right: "dataMax",
             top: "dataMax+1",
             bottom: "dataMin",
-            top2: "dataMax+50",
-            bottom2: "dataMin+50",
+            top2: "dataMax+0.01",
+            bottom2: "dataMin+0.01",
         }));
-    }, []);
+    }, [state]);
 
     return (
         <div

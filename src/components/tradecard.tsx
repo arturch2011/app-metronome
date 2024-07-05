@@ -68,7 +68,7 @@ export const TradeCard = ({
                         <p className="text-cprimary text-end">
                             {`${trade.underlyingValue}%`}
                             <span className="block font-light text-sm">
-                                $3,000.53
+                                $3,000.0
                             </span>
                         </p>
                     </div>
@@ -88,7 +88,7 @@ export const TradeCard = ({
                                 <p>Price</p>
                             </div>
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-end">
                             <p>{`${trade.longPercent}%`}</p>
                             <p>{numeral(trade.longPrice).format("$0,0.0")}</p>
                         </div>

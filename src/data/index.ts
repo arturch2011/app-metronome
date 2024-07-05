@@ -50,16 +50,16 @@ type TradeCardData = Omit<typeof tradeCardsProps.tradeCardData, "link">;
 
 export const tradeCardsData: TradeCardData[] = [
   {
-    logoType: "nstSTRK",
+    logoType: "MTK",
     logoPath: metroLogo,
     maturityDate: 1721908800000,
-    liquidityValue: 54650292.38,
-    underlyingValue: 9.01,
-    impliedValue: 22.74,
-    longPercent: -100,
-    longPrice: 38.5,
-    fixedPercent: 15.0,
-    fixedPrice: 3800.5,
+    liquidityValue: 200000000,
+    underlyingValue: 6.0,
+    impliedValue: 5.8,
+    longPercent: 6,
+    longPrice: 517.24,
+    fixedPercent: 5.8,
+    fixedPrice: 2482.75,
     address: "0x5c9d91c3b78242d6cfe399df198bf176b0910485cfb2e54e4c5d609d745083d",
   },
 ]

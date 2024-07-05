@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
+import numeral from "numeral";
 
 export interface PoolsCardProps {
     link: string;
@@ -49,7 +50,7 @@ export const PoolsCard = ({
                     </p>
                     <p>
                         <span className="font-bold text-xl">
-                            ${tvl.toFixed(2)}{" "}
+                            ${numeral(tvl).format("0,0.00")}{" "}
                         </span>
                         tvl
                     </p>
