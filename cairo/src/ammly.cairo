@@ -14,7 +14,7 @@ trait IMintable<TContractState> {
 }
 
 #[starknet::contract]
-mod Amm {
+mod Ammy {
     use super::IMintableDispatcher;
     use super::IMintableDispatcherTrait;
 

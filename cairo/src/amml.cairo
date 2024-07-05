@@ -40,12 +40,7 @@ mod Amm {
     }
 
     #[constructor]
-    fn constructor(
-        ref self: ContractState,
-        underTk: ContractAddress,
-        ptTk: ContractAddress,
-        ytTk: ContractAddress
-    ) {
+    fn constructor(ref self: ContractState, underTk: ContractAddress, ptTk: ContractAddress,) {
         self.underlying.write(underTk);
         self.principalTk.write(ptTk);
     }

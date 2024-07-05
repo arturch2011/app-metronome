@@ -4,7 +4,7 @@ import { getCompiledCode } from "./utils";
 require("dotenv").config();
 
 const MTK_ADDR = process.env.MTK_ADDR || "";
-const PT_ADDR = process.env.PT_ADDR || "";
+const YT_ADDR = process.env.YT_ADDR || "";
 
 const RPC_ENDPOINT = "https://starknet-sepolia.public.blastapi.io/rpc/v0_7";
 // const CONTRACT_ADDR = "0x12325ba8fb37c73cab1853c5808b9ee69193147413d21594a61581da64ff29d";
@@ -20,7 +20,7 @@ async function main() {
     console.log("ACCOUNT_ADDRESS=", process.env.DEPLOYER_ADDRESS);
     console.log("ACCOUNT_PRIVATE_KEY=", process.env.DEPLOYER_PRIVATE_KEY);
     console.log("MTK_ADD=", MTK_ADDR);
-    console.log("PT_ADDR=", PT_ADDR);
+    console.log("YT_ADDR=", YT_ADDR);
     const privateKey0 = process.env.DEPLOYER_PRIVATE_KEY ?? "";
     const deployer_address: string = process.env.DEPLOYER_ADDRESS ?? "";
     const account0 = new Account(provider, deployer_address, privateKey0, "1");
@@ -31,7 +31,7 @@ async function main() {
 
     try {
         ({ sierraCode, casmCode } = await getCompiledCode(
-            "cairo_Amm"
+            "cairo_Ammy"
         ));
     } catch (error: any) {
         console.log("Failed to read contract files");
@@ -41,7 +41,7 @@ async function main() {
     const myCallData = new CallData(sierraCode.abi);
     const constructor = myCallData.compile("constructor", {
         underTk: MTK_ADDR,
-        ptTk: PT_ADDR,
+        ytTk: YT_ADDR,
     });
     try {
         console.log("Deploying contract...");
@@ -52,7 +52,7 @@ async function main() {
             constructorCalldata: constructor,
         });
         console.log(
-            `✅ AMM PT Contract has been deploy with the address: ${deployResponse.deploy.address}`
+            `✅ AMM YT Contract has been deploy with the address: ${deployResponse.deploy.address}`
         );
         // console.log(`✅ Contract has been deploy data ${deployResponse.deploy.calldata}`);
     } catch (error: any) {

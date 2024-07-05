@@ -8,6 +8,7 @@
         "deployy": "ts-node scripts/deploy_YT.ts",
         "deployi": "ts-node scripts/deploy_INT.ts",
         "deploya": "ts-node scripts/deploy_AMM.ts",
+        "deployay": "ts-node scripts/deploy_AMMy.ts",
         "deployAll": "npm run deploym & npm run deployp & npm run deployy & npm run deployi & npm run deploya"
     },
     "author": "",
