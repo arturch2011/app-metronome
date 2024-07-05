@@ -1,17 +1,14 @@
 "use client";
 
-import { Mint } from "@/components/mint";
-import { Swap } from "@/components/swap";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { IoSettingsSharp } from "react-icons/io5";
 import strklogo from "/public/metrologoc.png";
-import Chart from "@/components/graphs/apy-graph";
-import Example from "@/components/graphs/price-graph";
-import Example2 from "@/components/graphs/apy-graph";
-import { Three } from "@/components/ui/threelines";
-import { addressMap } from "../../../data";
+import { Swap } from "@/app/trade/[id]/SwapMint/Swap";
+import { Mint } from "@/app/trade/[id]/SwapMint/Mint";
+import { Graph } from "@/app/trade/[id]/GraphDashboard/Graph";
+import { apyGraphInitialData, priceGraphInitalData } from "@/data/graph-data";
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -185,7 +182,7 @@ export default function PtYtTrading() {
                                 </div>
                             ) : (
                                 <div>
-                                    <Example2 />
+                                    <Graph initialData={isApy ? apyGraphInitialData : priceGraphInitalData} />
                                 </div>
                             )}
                         </div>

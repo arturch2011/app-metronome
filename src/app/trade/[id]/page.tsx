@@ -10,7 +10,6 @@ import { GraphDashboard } from "./GraphDashboard";
 interface PtYtTradingProps {
 
 }
-import { addressMap } from "../../../data";
 
 export default function PtYtTrading({}: PtYtTradingProps) {
   const { id } = useParams();

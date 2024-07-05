@@ -16,7 +16,8 @@ export const GraphDashboard = ({ isPt }: GraphDashboardProps) => {
   const [isApy, setIsApy] = useState(true);
   const { id } = useParams();
 
-  const trade = tradeCardsData.find((_, idx) => idx === Number(id));
+  const trade = tradeCardsData.find(data => data.address === id);
+  
   const isTradeExist = !!trade;
 
   const renderDashboardHeader = (trade: TradeCardData) => (
