@@ -186,7 +186,7 @@ mod Amm {
         if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
             assert(
                 (self.reserve0.read()
-                    * (amount1 * (1000 + yield * 10) / 1000)) == (self.reserve1.read() * amount0),
+                    * amount1) == (self.reserve1.read() * (amount0 * (1000 + yield * 10) / 1000)),
                 'dy / dx != y / x'
             );
         }

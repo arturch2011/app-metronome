@@ -25,9 +25,6 @@ mod Amm {
     use pragma_lib::abi::{IPragmaABIDispatcher, IPragmaABIDispatcherTrait};
     use pragma_lib::types::{AggregationMode, DataType, PragmaPricesResponse};
 
-    // const KEY: felt252 =
-    //     6004514686061859652; // felt252 conversion of "STRK/USD", can also write const KEY : felt252 = 'BTC/USD';
-
     #[storage]
     struct Storage {
         underlying: ContractAddress,
@@ -83,22 +80,6 @@ mod Amm {
             }
             z
         }
-    // fn _get_asset_price_median(
-    //     self: @ContractState, oracle_address: ContractAddress, asset: DataType
-    // ) -> u128 {
-    //     let oracle_dispatcher = IPragmaABIDispatcher { contract_address: oracle_address };
-    //     let output: PragmaPricesResponse = oracle_dispatcher
-    //         .get_data(asset, AggregationMode::Median(()));
-    //     return output.price;
-    // }
-
-    // fn getPrice(ref self: ContractState) -> u128 {
-    //     let oracle_address: ContractAddress = contract_address_const::<
-    //         0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a
-    //     >();
-    //     let price = self._get_asset_price_median(oracle_address, DataType::SpotEntry(KEY));
-    //     price
-    // }
     }
 
 
@@ -171,32 +152,6 @@ mod Amm {
         }
     }
 
-    // #[external(v0)]
-    // fn swap_yt(ref self: ContractState, tokenIn: ContractAddress, amountIn: u256) -> u256 {
-    //     // Define incoming token
-    //     let incTk = IMintableDispatcher { contract_address: tokenIn };
-    //     // Pull token in
-    //     incTk.transfer_from(get_caller_address(), get_contract_address(), amountIn);
-
-    //     // 2 cases, swap yt back to underlying or swap underlying to yt
-    //     // swap underlying to yt: user send underlying to contract, contract convert it to sy and then pt and yt, after that converts pt into yt and send all of it to user
-    //     if tokenIn == self.underlying.read() {
-
-    //         // convert it to sy
-    //         // convert sy into pt and yt
-    //         // convert pt to yt
-    //         // send yt to user
-    //     }
-    //     // swap yt to underlying: user send yt to contract, contract takes its equivalent part of pt and convert both to sy then return the equivalent part of sy-yt and send to user, after that converts this sy back to pt rebalancing the pool.
-    //     else {
-    //         // take its equivalent part of pt
-    //         // convert pt and yt to sy
-    //         // return the equivalent part of sy-yt
-    //         // convert sy back to pt
-    //     }
-
-    // }
-
     #[external(v0)]
     fn add_liquidity(ref self: ContractState, amount0: u256, amount1: u256) -> u256 {
         let underlying = IMintableDispatcher { contract_address: self.underlying.read() };
@@ -208,7 +163,7 @@ mod Amm {
         if (self.reserve0.read() > 0 || self.reserve1.read() > 0) {
             assert(
                 (self.reserve0.read()
-                    * (amount1 * ((yield * 10) / 1000))) == (self.reserve1.read() * amount0),
+                    * amount1) == (self.reserve1.read() * (amount0 / ((yield * 10) / 1000))),
                 'dy / dx != y / x'
             );
         }
