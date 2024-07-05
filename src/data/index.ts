@@ -57,9 +57,9 @@ export const tradeCardsData: TradeCardData[] = [
     underlyingValue: 6.0,
     impliedValue: 5.8,
     longPercent: 6,
-    longPrice: 517.24,
+    longPrice: 156.22,
     fixedPercent: 5.8,
-    fixedPrice: 2482.75,
+    fixedPrice: 2992.61,
     address: "0x5c9d91c3b78242d6cfe399df198bf176b0910485cfb2e54e4c5d609d745083d",
   },
 ]

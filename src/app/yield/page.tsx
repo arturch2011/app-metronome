@@ -16,6 +16,7 @@ import myTokenAbi from "../../abis/mTAbi.json";
 import { motion } from "framer-motion";
 import { FaLongArrowAltDown } from "react-icons/fa";
 import { useState, useMemo, use } from "react";
+import { toast } from "sonner";
 
 require("dotenv").config();
 
@@ -150,6 +151,9 @@ export default function Yeald() {
             <span>{message}</span>
         </div>
     );
+    const alerta = () => {
+        toast.success("Transaction confirmed");
+    };
 
     const buttonContent = () => {
         if (writeIsPending) {
@@ -161,10 +165,12 @@ export default function Yeald() {
         }
 
         if (waitData && waitData.status === "REJECTED") {
+            toast.error("Transaction rejected");
             return <LoadingState message="Transaction rejected..." />;
         }
 
         if (waitData) {
+            toast.success("Transaction confirmed");
             return "Transaction confirmed";
         }
 
@@ -246,7 +252,7 @@ export default function Yeald() {
                         </div>
                         <button
                             onClick={handleSubmit}
-                            className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
+                            className="w-full rounded-xl text-center px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
                         >
                             {buttonContent()}
                         </button>

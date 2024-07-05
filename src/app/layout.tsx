@@ -4,6 +4,7 @@ import { StarknetProvider } from "@/components/starknet-provider";
 import "./globals.css";
 import Navbar from "@/components/layout/navbar";
 import { Particles } from "@/components/particles";
+import { Toaster } from "sonner";
 
 const cairo = Cairo({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
             <body className={cairo.className}>
                 <StarknetProvider>
                     <Navbar />
+                    <Toaster />
                     <Particles className="absolute inset-0 -z-10" />
                     {children}
                 </StarknetProvider>

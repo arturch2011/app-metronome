@@ -76,7 +76,7 @@ const Navbar = () => {
                                 href="/"
                                 className="text-dprimary text-sm hover:text-primary  p-1   font-bold"
                             >
-                                PoC
+                                Yield Tokenization
                             </Link>
                             {/* <Link
                                 href="/swap"

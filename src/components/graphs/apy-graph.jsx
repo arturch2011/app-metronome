@@ -12,26 +12,161 @@ import {
 } from "recharts";
 
 const initialData = [
-    { name: 1, Implied: 50, Underlying: 100 },
-    { name: 2, Implied: 37, Underlying: 120 },
-    { name: 3, Implied: 45, Underlying: 150 },
-    { name: 4, Implied: 55, Underlying: 180 },
-    { name: 5, Implied: 59, Underlying: 200 },
-    { name: 6, Implied: 63, Underlying: 499 },
-    { name: 7, Implied: 53, Underlying: 50 },
-    { name: 8, Implied: 52, Underlying: 100 },
-    { name: 9, Implied: 79, Underlying: 200 },
-    { name: 10, Implied: 94, Underlying: 222 },
-    { name: 11, Implied: 73, Underlying: 210 },
-    { name: 12, Implied: 41, Underlying: 300 },
-    { name: 13, Implied: 21, Underlying: 50 },
-    { name: 14, Implied: 86, Underlying: 190 },
-    { name: 15, Implied: 77, Underlying: 300 },
-    { name: 16, Implied: 66, Underlying: 400 },
-    { name: 17, Implied: 55, Underlying: 200 },
-    { name: 18, Implied: 99, Underlying: 50 },
-    { name: 19, Implied: 76, Underlying: 100 },
-    { name: 20, Implied: 85, Underlying: 100 },
+    {
+        name: "1",
+        PT: 2992.5,
+        YT: 157.5,
+    },
+    {
+        name: "2",
+        PT: 2993.77978,
+        YT: 142.8242414,
+    },
+    {
+        name: "3",
+        PT: 2993.212422,
+        YT: 149.4856326,
+    },
+    {
+        name: "4",
+        PT: 2992.306488,
+        YT: 159.6163108,
+    },
+    {
+        name: "5",
+        PT: 2992.157741,
+        YT: 161.2266629,
+    },
+    {
+        name: "6",
+        PT: 2993.007114,
+        YT: 151.8329945,
+    },
+    {
+        name: "7",
+        PT: 2992.660549,
+        YT: 155.7252731,
+    },
+    {
+        name: "8",
+        PT: 2992.772663,
+        YT: 154.4754652,
+    },
+    {
+        name: "9",
+        PT: 2992.615093,
+        YT: 156.229527,
+    },
+    {
+        name: "10",
+        PT: 2991.358023,
+        YT: 169.6572921,
+    },
+    {
+        name: "11",
+        PT: 2990.519538,
+        YT: 178.1262053,
+    },
+    {
+        name: "12",
+        PT: 2988.963888,
+        YT: 192.9930696,
+    },
+    {
+        name: "13",
+        PT: 2988.00606,
+        YT: 201.6826823,
+    },
+    {
+        name: "14",
+        PT: 2986.323733,
+        YT: 216.2319434,
+    },
+    {
+        name: "15",
+        PT: 2984.27007,
+        YT: 232.9620404,
+    },
+    {
+        name: "16",
+        PT: 2986.382447,
+        YT: 215.7379563,
+    },
+    {
+        name: "17",
+        PT: 2985.306474,
+        YT: 224.6472785,
+    },
+    {
+        name: "18",
+        PT: 2983.222859,
+        YT: 241.1237982,
+    },
+    {
+        name: "19",
+        PT: 2985.997692,
+        YT: 218.9582147,
+    },
+    {
+        name: "20",
+        PT: 2986.354408,
+        YT: 215.9739818,
+    },
+    {
+        name: "21",
+        PT: 2984.32715,
+        YT: 232.5104595,
+    },
+    {
+        name: "22",
+        PT: 2987.074355,
+        YT: 209.8442445,
+    },
+    {
+        name: "23",
+        PT: 2988.522265,
+        YT: 197.0395995,
+    },
+    {
+        name: "24",
+        PT: 2989.770452,
+        YT: 185.4112918,
+    },
+    {
+        name: "25",
+        PT: 2989.324863,
+        YT: 189.6315905,
+    },
+    {
+        name: "26",
+        PT: 2991.230308,
+        YT: 170.9704217,
+    },
+    {
+        name: "27",
+        PT: 2989.740953,
+        YT: 185.6931986,
+    },
+    {
+        name: "28",
+        PT: 2990.686277,
+        YT: 176.4698454,
+    },
+    {
+        name: "29",
+        PT: 2989.857239,
+        YT: 184.5798108,
+    },
+    {
+        name: "30",
+        PT: 2990.993061,
+        YT: 173.3870398,
+    },
+    {
+        name: "31",
+        PT: 2989.573118,
+        YT: 187.2902331,
+    },
 ];
 
 const getAxisYDomain = (from, to, ref, offset) => {
@@ -51,10 +186,10 @@ const initialState = {
     right: "dataMax",
     refAreaLeft: "",
     refAreaRight: "",
-    top: "dataMax+1",
-    bottom: "dataMin-1",
-    top2: "dataMax+20",
-    bottom2: "dataMin-20",
+    top: "dataMax+1000",
+    bottom: "dataMin-100",
+    top2: "dataMax+1000",
+    bottom2: "dataMin-100",
     animation: true,
 };
 
@@ -115,10 +250,10 @@ export default class Example2 extends PureComponent {
             refAreaRight: "",
             left: "dataMin",
             right: "dataMax",
-            top: "dataMax+1",
-            bottom: "dataMin",
-            top2: "dataMax+50",
-            bottom2: "dataMin+50",
+            top: "dataMax+3000",
+            bottom: "dataMin+3000",
+            top2: "dataMax+3000",
+            bottom2: "dataMin+3000",
         }));
     }
 
@@ -182,7 +317,7 @@ export default class Example2 extends PureComponent {
                         <Line
                             yAxisId="2"
                             type="monotone"
-                            dataKey="Implied"
+                            dataKey="PT"
                             stroke="#8884d8"
                             dot={false}
                             animationDuration={300}
@@ -190,7 +325,7 @@ export default class Example2 extends PureComponent {
                         <Line
                             yAxisId="2"
                             type="monotone"
-                            dataKey="Underlying"
+                            dataKey="YT"
                             stroke="#82ca9d"
                             dot={false}
                             animationDuration={300}

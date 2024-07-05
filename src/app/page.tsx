@@ -10,7 +10,9 @@ export default function Home() {
             <section className=" py-20 px-10 ">
                 <div className="flex justify-between items-center w-full max-w-screen-2xl mx-auto">
                     <div className="flex flex-col gap-6">
-                        <h1 className="text-5xl font-bold">Proof of Concept</h1>
+                        <h1 className="text-5xl font-bold">
+                            Yield Tokenization
+                        </h1>
                         {/* <p className="text-xl max-w-96">
             The proof of concept requires that when a user
             transfers a MTK token, two tokens are generated, one

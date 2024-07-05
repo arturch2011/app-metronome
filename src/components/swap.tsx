@@ -13,7 +13,7 @@ import contractAbi from "../abis/ammabi.json";
 import myTokenAbi from "../abis/mTAbi.json";
 import ptTokenAbi from "../abis/ptabi.json";
 import ytTokenAbi from "../abis/ytabi.json";
-
+import { toast } from "sonner";
 import { MdSwapVert } from "react-icons/md";
 import { motion } from "framer-motion";
 import { useState, useMemo, use } from "react";
@@ -202,10 +202,12 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
         }
 
         if (waitData && waitData.status === "REJECTED") {
+            toast.error("Transaction rejected");
             return <LoadingState message="Transaction rejected..." />;
         }
 
         if (waitData) {
+            toast.success("Transaction confirmed");
             return "Transaction confirmed";
         }
 
@@ -248,7 +250,9 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
                         }}
                         className="bg-transparent w-2/3 focus:outline-none counter p-3"
                     /> */}
-                    <p className="w-2/3 p-3">{isPt?amount*1.05:amount/20}</p>
+                    <p className="w-2/3 p-3">
+                        {isPt ? amount * 1.05 : amount / 20}
+                    </p>
                     <button
                         onClick={() => setShowPopup(true)}
                         className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
@@ -258,7 +262,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
                 </div>
                 <button
                     onClick={handleSubmit}
-                    className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
+                    className="w-full rounded-xl text-center  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
                 >
                     {buttonContent()}
                 </button>
