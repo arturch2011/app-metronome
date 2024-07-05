@@ -15,8 +15,6 @@ import { motion } from "framer-motion";
 import { FaLongArrowAltDown } from "react-icons/fa";
 import { MdAdd } from "react-icons/md";
 import contractAbi from "../abis/ammabi.json";
-import myTokenAbi from "../abis/mTAbi.json";
-import ptTokenAbi from "../abis/ptabi.json";
 
 import { useState, useMemo, use } from "react";
 
@@ -25,50 +23,15 @@ require("dotenv").config();
 const simpleAddr = process.env.SIMPLE_ADDR;
 const mtkAddr = process.env.MTK_ADDR;
 
-interface AddLiqProps {
+interface RmvLiqProps {
     address: string;
 }
 
-export const AddLiq = ({ address }: AddLiqProps) => {
+export const RmvLiq = ({ address }: RmvLiqProps) => {
     const { address: userAddress } = useAccount();
     const [showPopup, setShowPopup] = useState(false);
     const [amount, setAmount] = useState(0);
 
-    const {
-        isLoading: balanceIsLoading,
-        isError: balanceIsError,
-        error: balanceError,
-        data: balanceData,
-    } = useBalance({
-        token: "0x5724882a4f5aef9a5ced3fc2a0258257bde7ccb21d9a66f27855afc07f74821",
-        address: userAddress,
-        watch: true,
-    });
-
-    const {
-        isLoading: balancePTIsLoading,
-        isError: balancePTIsError,
-        error: balancePTError,
-        data: balancePTData,
-    } = useBalance({
-        token: "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe",
-        address: userAddress,
-        watch: true,
-    });
-    const {
-        isLoading: balanceYTIsLoading,
-        isError: balanceYTIsError,
-        error: balanceYTError,
-        data: balanceYTData,
-    } = useBalance({
-        token: "0x536b0fe7c73669d57d6042e1b3bc8e058dc18f5dcc632b1dfdef932fdacb739",
-        address: userAddress,
-        watch: true,
-    });
-
-    let ptbal = "0";
-    let ytbal = "0";
-    let strkbal = "0";
     const contractAddress =
         "0x1f2e02b552bac62c90a0b2b69a23ce7dcc3072e436cdc72df22aedf8cf32747";
 
@@ -77,30 +40,9 @@ export const AddLiq = ({ address }: AddLiqProps) => {
 
     const ptAddress =
         "0x751e927928287a66be78e8ff31b3628c0fb1156bf244ea3eae01b9bc92d2fe";
-
-    if (!balanceIsLoading && !balanceIsError) {
-        strkbal = balanceData?.formatted!;
-    }
-
-    if (!balancePTIsLoading && !balancePTIsError) {
-        ptbal = balancePTData?.formatted!;
-    }
-
-    if (!balanceYTIsLoading && !balanceYTIsError) {
-        ytbal = balanceYTData?.formatted!;
-    }
     const { contract } = useContract({
         abi: contractAbi,
         address: contractAddress,
-    });
-    const contractaprov = useContract({
-        abi: myTokenAbi,
-        address: myTokenAddr,
-    });
-
-    const contractpt = useContract({
-        abi: ptTokenAbi,
-        address: ptAddress,
     });
 
     const handleSubmit = async () => {
@@ -118,24 +60,12 @@ export const AddLiq = ({ address }: AddLiqProps) => {
 
         // return contract.populateTransaction["approve"]!(contractAddress,{ low: (amount ? amount : 0), high: 0 });
         return [
-            contractaprov.contract?.populateTransaction["approve"]!(
-                contractAddress,
-                { low: amountInWei ? amountInWei : 0, high: 0 }
-            ),
-            contractpt.contract?.populateTransaction["approve"]!(
-                contractAddress,
-                { low: amountplusInWei ? amountplusInWei : 0, high: 0 }
-            ),
-            contract.populateTransaction["add_liquidity"]!(
-                amountInWei,
-                amountplusInWei,
-                {
-                    low: amountInWei ? amountInWei : 0,
-                    high: 0,
-                }
-            ),
+            contract.populateTransaction["remove_liquidity"]!({
+                low: amount ? amount : 0,
+                high: 0,
+            }),
         ];
-    }, [contract, userAddress, amount, contractaprov.contract]);
+    }, [contract, userAddress, amount]);
 
     const {
         writeAsync,
@@ -178,7 +108,7 @@ export const AddLiq = ({ address }: AddLiqProps) => {
 
     const buttonContent = () => {
         if (writeIsPending) {
-            return <LoadingState message="Add..." />;
+            return <LoadingState message="Remove..." />;
         }
 
         if (waitIsLoading) {
@@ -193,14 +123,13 @@ export const AddLiq = ({ address }: AddLiqProps) => {
             return "Transaction confirmed";
         }
 
-        return "Add";
+        return "Remove";
     };
     return (
         <>
             <div className="w-full   flex flex-col items-start  ">
-                <div className="w-full flex justify-between mb-1">
-                    <p>Underlyne Input</p>
-                    <p>Balance: {Number(strkbal).toFixed(2)}</p>
+                <div className="w-full flex  mb-1">
+                    <p>Shares Input</p>
                 </div>
                 <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden">
                     <input
@@ -208,40 +137,13 @@ export const AddLiq = ({ address }: AddLiqProps) => {
                         onChange={(e) => {
                             setAmount(e.target.valueAsNumber);
                         }}
-                        className="bg-transparent w-2/3 focus:outline-none counter p-3"
+                        className="bg-transparent w-full focus:outline-none counter p-3"
                     />
-                    <button
-                        onClick={() => setShowPopup(true)}
-                        className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
-                    >
-                        MTK
-                    </button>
                 </div>
-                <MdAdd className="self-center text-primary text-4xl  h-6 mt-6" />
-                <div className="w-full flex justify-start mb-1">
-                    <p>PT Input</p>
-                </div>
-                <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden ">
-                    <p className="w-2/3 p-3">{(amount * 1.05).toFixed(2)}</p>
 
-                    <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
-                        PT MTK
-                    </div>
-                </div>
-                <FaLongArrowAltDown className="self-center text-primary text-4xl  h-6 mt-6" />
-                <div className="w-full flex justify-start mb-1">
-                    <p>Output</p>
-                </div>
-                <div className="w-full rounded-xl border-2 border-primary flex overflow-hidden mb-4">
-                    <p className="w-2/3 p-3">{amount}</p>
-
-                    <div className="border-l-2 border-primary text-primary text-center  w-1/3   p-3  font-bold">
-                        LP MTK
-                    </div>
-                </div>
                 <button
                     onClick={handleSubmit}
-                    className="w-full rounded-xl  px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
+                    className="w-full rounded-xl mt-4 px-2 py-1 group border-solid border-2 border-primary text-primary hover:bg-primary hover:text-baser ease-in-out duration-500 active:bg-baser active:text-primary active:duration-0 text-lg font-bold"
                 >
                     {buttonContent()}
                 </button>

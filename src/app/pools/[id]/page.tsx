@@ -13,6 +13,7 @@ import Example2 from "@/components/graphs/apy-graph";
 import { Three } from "@/components/ui/threelines";
 import { addressMap } from "../../../data";
 import { AddLiq } from "@/components/addliqudity";
+import { RmvLiq } from "@/components/removeliq";
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -111,7 +112,7 @@ export default function PtYtTrading() {
                             {isSwap ? (
                                 <AddLiq address={"0x"} />
                             ) : (
-                                <Mint address="oi" />
+                                <RmvLiq address="oi" />
                             )}
                         </div>
                     </div>

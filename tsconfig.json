@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/graphs/apy-graph.tsx", "src/components/graphs/price-graph.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/graphs/apy-graph.tsx", "src/components/graphs/price-graph.tsx"],
   "exclude": ["node_modules"]
 }

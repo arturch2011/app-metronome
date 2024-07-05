@@ -4,11 +4,11 @@
         "name": "constructor",
         "inputs": [
             {
-                "name": "principalTk",
+                "name": "underTk",
                 "type": "core::starknet::contract_address::ContractAddress"
             },
             {
-                "name": "token2",
+                "name": "ptTk",
                 "type": "core::starknet::contract_address::ContractAddress"
             }
         ]
