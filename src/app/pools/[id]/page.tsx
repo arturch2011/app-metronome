@@ -8,10 +8,11 @@ import { useState } from "react";
 import { IoSettingsSharp } from "react-icons/io5";
 import strklogo from "/public/metrologoc.png";
 import Chart from "@/components/graphs/apy-graph";
-import Example from "@/components/graphs/price-graph";
+// import Example from "@/components/graphs/price-graph";
 import Example2 from "@/components/graphs/apy-graph";
 import { Three } from "@/components/ui/threelines";
 import { addressMap } from "../../../data";
+import { AddLiq } from "@/components/addliqudity";
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -108,12 +109,7 @@ export default function PtYtTrading() {
                                 </button>
                             </div>
                             {isSwap ? (
-                                <Swap
-                                    isPt={true}
-                                    address={id.toString()}
-                                    pt="0x04a0698b2962ced0254cb2159bdc3057a3b02da61366aeb32e19fa46961a97a7"
-                                    yt="0x07363bb886c801a7c620a953e981cfc209dbd8370d8f4ff8a1df6b8eaec51642"
-                                />
+                                <AddLiq address={"0x"} />
                             ) : (
                                 <Mint address="oi" />
                             )}
@@ -168,20 +164,34 @@ export default function PtYtTrading() {
                         </div>
                         <div className="flex flex-col w-full ">
                             {isApy ? (
-                                <div className="flex gap-6 w-full justify-around p-5 backdrop-blur-sm bg-white/5  rounded-xl my-4">
+                                <div className="flex flex-col gap-6 w-full justify-around p-5 backdrop-blur-sm bg-white/5  rounded-xl my-4">
                                     <div className="flex w-full items-center justify-start gap-4 mb-4">
                                         <p className="text-2xl font-bold">
-                                            21.30%
-                                        </p>
-                                        <p className="text-green-400 text-xl">
-                                            50% (Past 7d)
+                                            This is a test pool just to check
+                                            functionalities and add liquidity
+                                            for swap and mint tokens.
                                         </p>
                                     </div>
-                                    <p>
-                                        {isPt
-                                            ? "1 PT rstETH is equal to1 rstETH at maturity."
-                                            : "1 YT rstETH represents the yield of1 rstETH until maturity."}
-                                    </p>
+                                    <div className="flex flex-col gap-6 w-full justify-around p-5 backdrop-blur-sm bg-white/5  rounded-xl">
+                                        <div className="w-full flex items-center justify-between">
+                                            <p>Total Value Locked</p>
+                                            <p>$200,000,000.00</p>
+                                        </div>
+                                        <div className="w-full flex items-center ">
+                                            <span className="w-2/3 h-3 bg-primary rounded-l-full" />
+                                            <span className="w-1/3 h-3 bg-cbase rounded-r-full" />
+                                        </div>
+                                        <div className="w-full flex items-center justify-between">
+                                            <div className="flex flex-col items-start">
+                                                <p>Underline</p>
+                                                <p>$132,000,000.00</p>
+                                            </div>
+                                            <div className="flex flex-col items-end">
+                                                <p>PT</p>
+                                                <p>$68,000,000.00</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             ) : (
                                 <div>

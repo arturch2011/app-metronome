@@ -4,14 +4,23 @@ import { Mint } from "@/components/mint";
 import { Swap } from "@/components/swap";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+// import { useState } from "react";
 import { IoSettingsSharp } from "react-icons/io5";
 import strklogo from "/public/metrologoc.png";
 import Chart from "@/components/graphs/apy-graph";
-import Example from "@/components/graphs/price-graph";
+// import Example, { Graph } from "@/components/graphs/price-graph";
 import Example2 from "@/components/graphs/apy-graph";
 import { Three } from "@/components/ui/threelines";
 import { addressMap } from "../../../data";
+import { useState, useEffect } from "react";
+import { Graph } from "@/components/graphs/price-graph";
+import { GraphData } from "@/data/graph-data";
+
+interface YieldData {
+    date: number;
+    Implied: number;
+    Underlying: number;
+}
 
 export default function PtYtTrading() {
     const params = useParams();
@@ -19,6 +28,43 @@ export default function PtYtTrading() {
     const [isPt, setIsPt] = useState(false);
     const [isSwap, setIsSwap] = useState(true);
     const [isApy, setIsApy] = useState(true);
+    const [yields, setYields] = useState<GraphData[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function fetchYields() {
+            try {
+                const response = await fetch(
+                    "https://metronome-indexer.onrender.com/api/v1/nststrk_yields"
+                );
+                if (!response.ok) {
+                    throw new Error("Network response was not ok.");
+                }
+                const data = await response.json();
+
+                const formatedYields = data.map(
+                    (yieldData: any, index: number) => ({
+                        date: index + 1,
+                        Implied: yieldData.apy,
+                        Underlying: yieldData.implicit_apy,
+                    })
+                );
+
+                setYields(formatedYields);
+                console.log(`AAAAAAAAAAAAAAAAAAAAA${formatedYields}`);
+            } catch (err: any) {
+                console.log("BBBBBBBBBBBBBBBBBBBBB");
+
+                setError(err.message);
+            } finally {
+                console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCBB");
+                setIsLoading(false);
+            }
+        }
+
+        fetchYields();
+    }, []);
 
     return (
         <>
@@ -182,7 +228,7 @@ export default function PtYtTrading() {
                                             ? "1 PT rstETH is equal to1 rstETH at maturity."
                                             : "1 YT rstETH represents the yield of1 rstETH until maturity."}
                                     </p>
-                                    <Example />
+                                    <Graph initialData={yields} />
                                 </div>
                             ) : (
                                 <div>
