@@ -15,6 +15,7 @@ snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag 
 snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.22.0" }
 
 [[target.starknet-contract]]
+allowed-libfuncs-list.name = "experimental"
 sierra = true
 casm = true
 

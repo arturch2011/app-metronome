@@ -13,6 +13,7 @@ trait IMintable<TContractState> {
     );
     fn burn_all(ref self: TContractState, accounts_list: Array<BurnList>);
     fn balance_of(self: @TContractState, account: ContractAddress) -> u256;
+    fn stake(ref self: TContractState, amount: u256);
 }
 
 #[derive(Drop, Serde, Copy)]
