@@ -11,33 +11,6 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-// async function getYields() {
-//     const response = await fetch(
-//         "https://metronome-indexer.onrender.com/api/v1/nststrk_yields",
-//         {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//         }
-//     );
-//     if (response.status !== 200) {
-//         return Response.json({ error: "Error creating sku balance" });
-//     }
-//     const yields = await response.json();
-//     const formatedYields = yields.map((yieldData, index) => {
-//         return {
-//             date: index + 1,
-//             Implied: yieldData.apy,
-//             Underlying: yieldData.implicit_apy,
-//         };
-//     });
-//     return formatedYields;
-// }
-
-// const data = await getYields();
-// console.log(data);
-
 const initialData = [
     { name: 1, Implied: 50, Underlying: 100 },
     { name: 2, Implied: 37, Underlying: 120 },
@@ -80,8 +53,8 @@ const initialState = {
     refAreaRight: "",
     top: "dataMax+1",
     bottom: "dataMin-1",
-    top2: "dataMax+0.01",
-    bottom2: "dataMin-0.01",
+    top2: "dataMax+20",
+    bottom2: "dataMin-20",
     animation: true,
 };
 
@@ -194,7 +167,7 @@ export default class Example2 extends PureComponent {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis
                             allowDataOverflow
-                            dataKey="date"
+                            dataKey="name"
                             domain={[left, right]}
                             type="number"
                         />

@@ -35,9 +35,11 @@ export default function PtYtTrading() {
     useEffect(() => {
         async function fetchYields() {
             try {
+                console.log(`AAAAAAAAAAAAAAAAAAAAA`);
                 const response = await fetch(
                     "https://metronome-indexer.onrender.com/api/v1/nststrk_yields"
                 );
+
                 if (!response.ok) {
                     throw new Error("Network response was not ok.");
                 }
@@ -52,7 +54,6 @@ export default function PtYtTrading() {
                 );
 
                 setYields(formatedYields);
-                console.log(`AAAAAAAAAAAAAAAAAAAAA${formatedYields}`);
             } catch (err: any) {
                 console.log("BBBBBBBBBBBBBBBBBBBBB");
 
