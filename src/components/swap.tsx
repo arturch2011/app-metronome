@@ -248,7 +248,7 @@ export const Swap = ({ isPt, address, pt, yt }: SwapProps) => {
                         }}
                         className="bg-transparent w-2/3 focus:outline-none counter p-3"
                     /> */}
-                    <p className="w-2/3 p-3">{amount}</p>
+                    <p className="w-2/3 p-3">{isPt?amount*1.05:amount/20}</p>
                     <button
                         onClick={() => setShowPopup(true)}
                         className=" border-l-2 border-primary text-primary hover:bg-primary hover:text-baser w-1/3 ease-in-out duration-500  p-3 active:bg-baser active:text-primary active:duration-0 font-bold"
