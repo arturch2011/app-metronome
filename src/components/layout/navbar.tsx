@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo } from "react";
 import Link from "next/link";
-import logo from "../../../public/metrologoc.png";
+import logo from "../../../public/logo.png";
 
 const Navbar = () => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -53,7 +53,7 @@ const Navbar = () => {
 
     return (
         <motion.nav
-            className={`bg-white/10 backdrop-blur-sm fixed w-full z-20 ${
+            className={`bg-cbase/10 backdrop-blur-sm fixed w-full z-20 ${
                 visible ? "" : "-translate-y-full"
             }`}
             initial={false}
